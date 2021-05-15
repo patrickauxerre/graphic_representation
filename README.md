@@ -1,14 +1,19 @@
 # graphic_representation
 
-easy graphic representation
+Easy graphic representation
+This package will allow you to make graphic representations very quickly with [Flutter](https://flutter.dev)
 
-## Getting Started
+## Installation
+In the dependencies: section of your `pubspec.yaml, add the following line:
 
-This project is a starting point for a Dart
-[package](https://flutter.dev/developing-packages/),
-a library module containing code that can be shared easily across
-multiple Flutter or Dart projects.
+```yaml
+dependencies:
+    graphic_representation: ^0.0.1
+```
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+## Usage
+Import this class :
+```dart
+import 'package:graphic_representation/graphic_representation.dart';
+```
+
