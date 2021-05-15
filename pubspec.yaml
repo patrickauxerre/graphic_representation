@@ -1,7 +1,8 @@
 name: graphic_representation
 description: easy graphic representation
 version: 0.0.1
-homepage:
+author: Patrick Auxerre<patrickauxerre@gmail.com>
+homepage: https://github.com/catpat44/graphic_representation
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
