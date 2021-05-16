@@ -12,7 +12,7 @@ In the dependencies: section of your `pubspec.yaml, add the following line:
 
 ```yaml
 dependencies:
-    graphic_representation: ^0.0.5
+    graphic_representation: ^0.0.6
 ```
 
 ## Usage
@@ -22,7 +22,7 @@ import 'package:graphic_representation/graphic_representation.dart';
 ```
 
 ## Example
-```dart
+```
 DiscreteGraphic(
             size: Size(MediaQuery.of(context).size.width,
                 MediaQuery.of(context).size.height * 0.4),
@@ -44,7 +44,7 @@ DiscreteGraphic(
             maxY: 20,
           )
 ```
-```dart
+```
 DiscreteGraphic(
             size: Size(MediaQuery.of(context).size.width,
                 MediaQuery.of(context).size.height * 0.4),
