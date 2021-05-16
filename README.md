@@ -22,7 +22,7 @@ import 'package:graphic_representation/graphic_representation.dart';
 ```
 
 ## Example
-```
+```dart
 DiscreteGraphic(
             size: Size(MediaQuery.of(context).size.width,
                 MediaQuery.of(context).size.height * 0.4),
@@ -44,7 +44,7 @@ DiscreteGraphic(
             maxY: 20,
           )
 ```
-```
+```dart
 DiscreteGraphic(
             size: Size(MediaQuery.of(context).size.width,
                 MediaQuery.of(context).size.height * 0.4),
