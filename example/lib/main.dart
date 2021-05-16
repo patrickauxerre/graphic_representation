@@ -60,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
             colorAxes: Colors.black,
             colorLine: Colors.blue,
-            strokeLine : 2.0,
+            strokeLine: 2.0,
             colorPoint: Colors.blue,
             radiusPoint: 3.0,
             nbGradY: 9,
@@ -77,7 +77,20 @@ class _MyHomePageState extends State<MyHomePage> {
           DiscreteGraphic(
             size: Size(MediaQuery.of(context).size.width,
                 MediaQuery.of(context).size.height * 0.35),
-            nums: [3.2, 2.2, 7.1, 12.7, 14.9, 18, 19.8,21.8,19.7,14.3,9.4,5.1],
+            nums: [
+              3.1,
+              2.2,
+              7.1,
+              12.7,
+              14.9,
+              18,
+              19.8,
+              21.8,
+              19.7,
+              14.3,
+              9.4,
+              5.1
+            ],
             listGradX: [
               "J",
               "F",
