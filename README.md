@@ -20,7 +20,6 @@ import 'package:graphic_representation/graphic_representation.dart';
 ```
 
 ## Example
-Import this class :
 ```dart
 DiscreteGraphic(
             size: Size(MediaQuery.of(context).size.width,
