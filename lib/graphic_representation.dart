@@ -133,29 +133,90 @@ class _GraphCustomPainter extends CustomPainter {
   }
 }
 
-/// Classe DiscreteGraphic pour construire un StatelessWidget -> Container de taille size contenant le graphique
-/// nums (required) : Liste de int ou double contenant les données chiffrées à representer
-/// colorAxes (required) : défini la couleur des axes
-/// nbGradY (required) : nombre de graduations sur l'axe vertical
-/// minY (optional) : définie la valeur minimum sur l'axe vertical. Si aucune valeur n'est donnée, la valeur minimale de l'axe vertical correspondra au minimum de la liste nums
-/// maxY (optional) : définie la valeur maximale sur l'axe vertical. Si aucune valeur n'est donnée, la valeur maximale de l'axe vertical correspondra au maximum de la liste nums
-/// colorLine (optional) : couleur de la ligne reliant les points. Si aucune valeur n'est donnée, la ligne ne sera pas présente.
-/// colorPoint (optional) : couleur des points sur le graphique. Si aucune valeur n'est donnée, les points ne seront pas présents.
-/// colorBox (optional) : couleur des barres verticales. Si aucune valeur n'est donnée, les barres verticales ne seront pas présentes.
-/// boxWidth (optional) : largeur des barres verticales. Si aucune valeur n'est donnée, cette largeur vaudra 5.
-/// listGradX (optional) : Liste de String contenant les valeurs à placer sur l'axe horizontal. Si aucune valeur n'est passée, aucune valeur n'apparaitra sur l'axe horizontal.
+/// Build a StatelessWidget : Container of defined size containing the graphic
+///
+/// The chart can contain different elements :
+///
+/// Points if colorPoint is defined.
+///
+/// Lines if colorLine is defined.
+///
+/// Verticals bars if colorBox is defined.
 
 class DiscreteGraphic extends StatelessWidget {
+  /// The size of the container returned.
+  ///
+  /// ```dart
+  /// size: Size(MediaQuery.of(context).size.width,MediaQuery.of(context).size.height * 0.4)
+  /// ```
   final Size size;
+  /// List of numbers containing the values to be represented.
+  ///
+  /// ```dart
+  /// nums: [1, 2, 5, 3, 7, 13, 7]
+  /// ```
   final List<num>? nums;
+  /// colors of the axes of the graphic
+  ///
+  /// ```dart
+  /// colorAxes: Colors.black
+  /// ```
   final Color colorAxes;
+  /// Number of graduations on the vertical axis
+  ///
+  /// ```dart
+  /// nbGradY: 10
+  /// ```
   final int nbGradY;
+  /// Minimum value of the vertical axis.
+  ///
+  /// If this value is null, the minimum value on the vertical axis will be the minimum value in the list [nums].
+  ///
+  /// ```dart
+  /// minY: 0
+  /// ```
   final double? minY;
+  /// Maximum value of the vertical axis.
+  ///
+  /// If this value is null, the maximum value on the vertical axis will be the maximum value in the list [nums].
+  ///
+  /// ```dart
+  /// maxY: 20
+  /// ```
   final double? maxY;
+  /// colors of the lines of the graphic. If the value is null, no line will be drawn.
+  ///
+  /// ```dart
+  /// colorLine: Colors.blue
+  /// ```
   final Color? colorLine;
+  /// colors of the points of the graphic. If the value is null, no points will be drawn.
+  ///
+  /// ```dart
+  /// colorPoint: Colors.blue
+  /// ```
   final Color? colorPoint;
+  /// colors of the verticals bars of the graphic. If the value is null, no bars will be drawn.
+  ///
+  /// ```dart
+  /// colorBox: Colors.red
+  /// ```
   final Color? colorBox;
+  /// Stroke width for verticals bars.
+  ///
+  /// Default value : 5
+  ///
+  /// ```dart
+  /// boxWidth: 15.0
+  /// ```
   final double? boxWidth;
+  /// List of String.
+  ///
+  /// Strings appearing on the horizontal axis associated with the values of [nums]
+  ///
+  /// ```dart
+  /// listGradX: ["Lun","Mar","Mer","Jeu","Ven","Sam","Dim"]
+  /// ```
   final List<String>? listGradX;
 
   DiscreteGraphic(
