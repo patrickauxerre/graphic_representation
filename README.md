@@ -40,6 +40,28 @@ DiscreteGraphic(
             colorLine: Colors.blue,
             minY: 0,
             maxY: 20,
-          ),
+          )
+```
+```dart
+DiscreteGraphic(
+            size: Size(MediaQuery.of(context).size.width,
+                MediaQuery.of(context).size.height * 0.4),
+            nums: [1, 2, 5, 3, 7, 13, 7],
+            listGradX: [
+              "Lun",
+              "Mar",
+              "Mer",
+              "Jeu",
+              "Ven",
+              "Sam",
+              "Dim",
+            ],
+            colorAxes: Colors.black,
+            nbGradY: 10,
+            colorBox: Colors.red,
+            boxWidth: 15.0,
+            minY: 0,
+            maxY: 20,
+          )
 ```
 
