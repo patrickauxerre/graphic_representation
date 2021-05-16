@@ -3,7 +3,9 @@
 Easy graphic representation
 This package will allow you to make graphic representations very quickly with [Flutter](https://flutter.dev)
 
-![Screenshot](/screenshots/screenshot1.png)
+<p align="center">
+  <img width="218" height="400" src="https://github.com/catpat44/graphic_representation/blob/main/screenshots/screenshot1.png?raw=true">
+</p>
 
 ## Installation
 In the dependencies: section of your `pubspec.yaml, add the following line:
