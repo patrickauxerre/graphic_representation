@@ -3,12 +3,14 @@
 Easy graphic representation
 This package will allow you to make graphic representations very quickly with [Flutter](https://flutter.dev)
 
+![Screenshot](/screenshots/screenshot1.png)
+
 ## Installation
 In the dependencies: section of your `pubspec.yaml, add the following line:
 
 ```yaml
 dependencies:
-    graphic_representation: ^0.0.2
+    graphic_representation: ^0.0.3
 ```
 
 ## Usage

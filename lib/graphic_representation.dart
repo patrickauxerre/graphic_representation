@@ -3,6 +3,9 @@ library graphic_representation;
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 
+/// Classe interne associée à la classe DiccreteGraphic
+/// Permet de dessiner tous les points et lignes en surchargeant la classe paint
+/// Hérite de CustomPainter
 class _GraphCustomPainter extends CustomPainter {
   _GraphCustomPainter(
       {required this.listNum,
@@ -103,6 +106,18 @@ class _GraphCustomPainter extends CustomPainter {
   }
 }
 
+/// Classe DiscreteGraphic pour construire un StatelessWidget -> Container de taille size contenant le graphique
+/// nums (required) : Liste de int ou double contenant les données chiffrées à representer
+/// colorAxes (required) : défini la couleur des axes
+/// nbGradY (required) : nombre de graduations sur l'axe vertical
+/// minY (optional) : définie la valeur minimum sur l'axe vertical. Si aucune valeur n'est donnée, la valeur minimale de l'axe vertical correspondra au minimum de la liste nums
+/// maxY (optional) : définie la valeur maximale sur l'axe vertical. Si aucune valeur n'est donnée, la valeur maximale de l'axe vertical correspondra au maximum de la liste nums
+/// colorLine (optional) : couleur de la ligne reliant les points. Si aucune valeur n'est donnée, la ligne ne sera pas présente.
+/// colorPoint (optional) : couleur des points sur le graphique. Si aucune valeur n'est donnée, les points ne seront pas présents.
+/// colorBox (optional) : couleur des barres verticales. Si aucune valeur n'est donnée, les barres verticales ne seront pas présentes.
+/// boxWidth (optional) : largeur des barres verticales. Si aucune valeur n'est donnée, cette largeur vaudra 5.
+/// listGradX (optional) : Liste de String contenant les valeurs à placer sur l'axe horizontal. Si aucune valeur n'est passée, aucune valeur n'apparaitra sur l'axe horizontal.
+
 class DiscreteGraphic extends StatelessWidget {
   final Size size;
   final List<num>? nums;
@@ -195,7 +210,7 @@ class DiscreteGraphic extends StatelessWidget {
               left: 50,
               child: (nums != null)
                   ? CustomPaint(
-                      size: Size(size.width - 100, size.height-40),
+                      size: Size(size.width - 100, size.height - 40),
                       painter: _GraphCustomPainter(
                           listNum: nums!,
                           colorAxes: colorAxes,
