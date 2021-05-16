@@ -1,3 +1,11 @@
+## [0.0.8] - 2021-05-16
+
+* Add two properties : strokeWidth and radiusPoint
+
+## [0.0.7] - 2021-05-16
+
+* Add dartdoc.
+
 ## [0.0.6] - 2021-05-16
 
 * Bug corrections.

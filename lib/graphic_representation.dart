@@ -3,7 +3,7 @@ library graphic_representation;
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 
-/// Classe interne associée à la classe DiccreteGraphic
+/// Classe interne associée à la classe DiscreteGraphic
 /// Permet de dessiner tous les points et lignes en surchargeant la classe paint
 /// Hérite de CustomPainter
 class _GraphCustomPainter extends CustomPainter {
@@ -15,7 +15,9 @@ class _GraphCustomPainter extends CustomPainter {
       required this.minY,
       required this.maxY,
       this.colorLine,
+      this.strokeLine,
       this.colorPoint,
+      this.radiusPoint,
       this.colorBox,
       this.boxWidth});
 
@@ -26,7 +28,9 @@ class _GraphCustomPainter extends CustomPainter {
   double minY;
   double maxY;
   Color? colorLine;
+  double? strokeLine;
   Color? colorPoint;
+  double? radiusPoint;
   Color? colorBox;
   double? boxWidth;
 
@@ -38,6 +42,12 @@ class _GraphCustomPainter extends CustomPainter {
 
     ///Valeur du strokeWidth utilisé pour les barres verticales
     double bw = (boxWidth == null) ? 5 : boxWidth!;
+
+    ///Valeur du strokeLine utilisé pour le tracé des lignes
+    double sl = (strokeLine == null) ? 3 : strokeLine!;
+
+    ///Valeur du radius utilisé pour les points
+    double rp = (radiusPoint == null) ? 4 : radiusPoint!;
 
     ///Draw the entire sequence of point as one line.
     final pointMode = ui.PointMode.polygon;
@@ -95,7 +105,7 @@ class _GraphCustomPainter extends CustomPainter {
       if (colorLine != null) {
         var paint1 = Paint()
           ..color = colorLine!
-          ..strokeWidth = 3
+          ..strokeWidth = sl
           ..strokeCap = StrokeCap.round;
         if (offSets[i].dy >= 0 &&
             offSets[i].dy <= size.height &&
@@ -113,7 +123,7 @@ class _GraphCustomPainter extends CustomPainter {
           offSets[i].dy >= 0 &&
           offSets[i].dy <= size.height) {
         var paint2 = Paint()..color = colorPoint!;
-        canvas.drawCircle(offSets[i], 4, paint2);
+        canvas.drawCircle(offSets[i], rp, paint2);
       }
       if (colorBox != null) {
         var paint3 = Paint()
@@ -150,24 +160,28 @@ class DiscreteGraphic extends StatelessWidget {
   /// size: Size(MediaQuery.of(context).size.width,MediaQuery.of(context).size.height * 0.4)
   /// ```
   final Size size;
+
   /// List of numbers containing the values to be represented.
   ///
   /// ```dart
   /// nums: [1, 2, 5, 3, 7, 13, 7]
   /// ```
   final List<num>? nums;
+
   /// colors of the axes of the graphic
   ///
   /// ```dart
   /// colorAxes: Colors.black
   /// ```
   final Color colorAxes;
+
   /// Number of graduations on the vertical axis
   ///
   /// ```dart
   /// nbGradY: 10
   /// ```
   final int nbGradY;
+
   /// Minimum value of the vertical axis.
   ///
   /// If this value is null, the minimum value on the vertical axis will be the minimum value in the list [nums].
@@ -176,6 +190,7 @@ class DiscreteGraphic extends StatelessWidget {
   /// minY: 0
   /// ```
   final double? minY;
+
   /// Maximum value of the vertical axis.
   ///
   /// If this value is null, the maximum value on the vertical axis will be the maximum value in the list [nums].
@@ -184,32 +199,55 @@ class DiscreteGraphic extends StatelessWidget {
   /// maxY: 20
   /// ```
   final double? maxY;
+
   /// colors of the lines of the graphic. If the value is null, no line will be drawn.
   ///
   /// ```dart
   /// colorLine: Colors.blue
   /// ```
   final Color? colorLine;
+
+  /// Stoke  of the lines.
+  ///
+  /// Default value : 3.0
+  ///
+  /// ```dart
+  /// strokeLine: 4.0
+  /// ```
+  final double? strokeLine;
+
   /// colors of the points of the graphic. If the value is null, no points will be drawn.
   ///
   /// ```dart
   /// colorPoint: Colors.blue
   /// ```
   final Color? colorPoint;
+
+  /// radius of the points.
+  ///
+  /// Default value : 4.0
+  ///
+  /// ```dart
+  /// radiusPoint: 5.0
+  /// ```
+  final double? radiusPoint;
+
   /// colors of the verticals bars of the graphic. If the value is null, no bars will be drawn.
   ///
   /// ```dart
   /// colorBox: Colors.red
   /// ```
   final Color? colorBox;
+
   /// Stroke width for verticals bars.
   ///
-  /// Default value : 5
+  /// Default value : 5.0
   ///
   /// ```dart
   /// boxWidth: 15.0
   /// ```
   final double? boxWidth;
+
   /// List of String.
   ///
   /// Strings appearing on the horizontal axis associated with the values of [nums]
@@ -227,7 +265,9 @@ class DiscreteGraphic extends StatelessWidget {
       this.minY,
       this.maxY,
       this.colorLine,
+      this.strokeLine,
       this.colorPoint,
+      this.radiusPoint,
       this.colorBox,
       this.boxWidth,
       this.listGradX});
@@ -303,7 +343,9 @@ class DiscreteGraphic extends StatelessWidget {
                           listNum: nums!,
                           colorAxes: colorAxes,
                           colorLine: colorLine,
+                          strokeLine: strokeLine,
                           colorPoint: colorPoint,
+                          radiusPoint: radiusPoint,
                           colorBox: colorBox,
                           boxWidth: boxWidth,
                           nbGradX: (nums != null) ? nums!.length : 1,

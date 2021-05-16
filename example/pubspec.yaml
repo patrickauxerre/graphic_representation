@@ -9,7 +9,6 @@ dependencies:
   flutter:
     sdk: flutter
   graphic_representation:
-
   cupertino_icons: ^1.0.2
 
 dev_dependencies:

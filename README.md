@@ -12,7 +12,7 @@ In the dependencies: section of your `pubspec.yaml, add the following line:
 
 ```yaml
 dependencies:
-    graphic_representation: ^0.0.6
+    graphic_representation: ^0.0.8
 ```
 
 ## Usage
@@ -25,7 +25,7 @@ import 'package:graphic_representation/graphic_representation.dart';
 ```dart
 DiscreteGraphic(
             size: Size(MediaQuery.of(context).size.width,
-                MediaQuery.of(context).size.height * 0.4),
+                MediaQuery.of(context).size.height * 0.35),
             nums: [1, 2, 5, 3, 7, 13, 7],
             listGradX: [
               "Lun",
@@ -37,33 +37,40 @@ DiscreteGraphic(
               "Dim",
             ],
             colorAxes: Colors.black,
-            nbGradY: 10,
-            colorPoint: Colors.blue,
             colorLine: Colors.blue,
+            strokeLine : 2.0,
+            colorPoint: Colors.blue,
+            radiusPoint: 3.0,
+            nbGradY: 9,
             minY: 0,
-            maxY: 20,
+            maxY: 16,
           )
 ```
 ```dart
 DiscreteGraphic(
             size: Size(MediaQuery.of(context).size.width,
-                MediaQuery.of(context).size.height * 0.4),
-            nums: [1, 2, 5, 3, 7, 13, 7],
+                MediaQuery.of(context).size.height * 0.35),
+            nums: [3.2, 2.2, 7.1, 12.7, 14.9, 18, 19.8,21.8,19.7,14.3,9.4,5.1],
             listGradX: [
-              "Lun",
-              "Mar",
-              "Mer",
-              "Jeu",
-              "Ven",
-              "Sam",
-              "Dim",
+              "J",
+              "F",
+              "M",
+              "A",
+              "M",
+              "J",
+              "J",
+              "A",
+              "S",
+              "O",
+              "N",
+              "D"
             ],
             colorAxes: Colors.black,
-            nbGradY: 10,
+            nbGradY: 14,
             colorBox: Colors.red,
-            boxWidth: 15.0,
+            boxWidth: 10.0,
             minY: 0,
-            maxY: 20,
+            maxY: 26,
           )
 ```
 
