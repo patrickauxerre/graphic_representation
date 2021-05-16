@@ -35,12 +35,16 @@ class _GraphCustomPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     ///Amplitude sur l'axe vertical
     var delta = maxY - minY;
+
     ///Valeur du strokeWidth utilisé pour les barres verticales
     double bw = (boxWidth == null) ? 5 : boxWidth!;
+
     ///Draw the entire sequence of point as one line.
     final pointMode = ui.PointMode.polygon;
+
     ///Hauteur d'une graduation verticale
     double gradVertical = size.height / (nbGradY - 1);
+
     ///Création des différents points puis tracé des lignes verticales avec canvas.drawPoints
     for (int i = 0; i <= nbGradY - 1; i++) {
       var points1 = [
@@ -53,8 +57,10 @@ class _GraphCustomPainter extends CustomPainter {
         ..strokeCap = StrokeCap.round;
       canvas.drawPoints(pointMode, points1, paint1);
     }
+
     ///Largeur d'une graduation horizontale
     double gradHorizontal = size.width / (nbGradX - 1);
+
     ///Création des différents points puis tracé des lignes horizontales avec canvas.drawPoints
     for (int i = 0; i <= nbGradX - 1; i++) {
       var points1 = [
@@ -67,18 +73,23 @@ class _GraphCustomPainter extends CustomPainter {
         ..strokeCap = StrokeCap.round;
       canvas.drawPoints(pointMode, points1, paint1);
     }
+
     /// index de parcours dans listNum
     int index = 0;
+
     /// Largeur entre deux points
     var stepX = size.width / (listNum.length - 1);
+
     /// Liste des points correspondant à listNum
     List<Offset> offSets = [];
+
     /// Ajout des points
     listNum.forEach((element) {
       offSets.add(Offset(index * stepX,
           size.height - ((element - minY) / delta) * size.height));
       index++;
     });
+
     /// Tracé des lignes si colorLine != null
     for (int i = 0; i < offSets.length - 1; i++) {
       if (colorLine != null) {
@@ -94,6 +105,7 @@ class _GraphCustomPainter extends CustomPainter {
         }
       }
     }
+
     /// Tracé des points si colorPoint != null
     /// Tracé des barres verticales si colorBox != null
     for (int i = 0; i <= offSets.length - 1; i++) {
