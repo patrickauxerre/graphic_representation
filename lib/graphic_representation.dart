@@ -509,12 +509,16 @@ class FunctionGraphic extends StatelessWidget {
 
   /// Number of graduations on the horizontal axis
   ///
+  /// Default value : 11.
+  ///
   /// ```dart
   /// nbGradX: 11
   /// ```
   final int? nbGradX;
 
   /// Number of graduations on the vertical axis
+  ///
+  /// Default value : 11.
   ///
   /// ```dart
   /// nbGradY: 11
