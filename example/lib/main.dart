@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:graphic_representation/graphic_representation.dart';
 
@@ -70,47 +72,22 @@ class _MyHomePageState extends State<MyHomePage> {
           Padding(
               padding: EdgeInsets.only(top: 20.0, bottom: 10.0),
               child: Text(
-                "Températures (°C)",
+                "f(x) = sin(x)/x",
                 style: TextStyle(fontWeight: FontWeight.bold),
                 textScaleFactor: 1.6,
               )),
-          DiscreteGraphic(
+          FunctionGraphic(
             size: Size(MediaQuery.of(context).size.width,
                 MediaQuery.of(context).size.height * 0.35),
-            nums: [
-              3.1,
-              2.2,
-              7.1,
-              12.7,
-              14.9,
-              18,
-              19.8,
-              21.8,
-              19.7,
-              14.3,
-              9.4,
-              5.1
-            ],
-            listGradX: [
-              "J",
-              "F",
-              "M",
-              "A",
-              "M",
-              "J",
-              "J",
-              "A",
-              "S",
-              "O",
-              "N",
-              "D"
-            ],
+            f : (x) => print(x),
             colorAxes: Colors.black,
-            nbGradY: 14,
-            colorBox: Colors.red,
-            boxWidth: 10.0,
-            minY: 0,
-            maxY: 26,
+            colorLine: Colors.purple,
+            nbGradX: 11,
+            minX: -20,
+            maxX: 20,
+            minY: -0.3,
+            maxY: 1,
+            strokeLine: 3.0,
           ),
         ],
       ),
