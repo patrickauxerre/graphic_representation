@@ -79,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
           FunctionGraphic(
             size: Size(MediaQuery.of(context).size.width,
                 MediaQuery.of(context).size.height * 0.35),
-            f : (x) => print(x),
+            f: (x) => sin(x) / x,
             colorAxes: Colors.black,
             colorLine: Colors.purple,
             nbGradX: 11,

@@ -1,3 +1,7 @@
+## [0.1.0] - 2021-05-17
+
+* Add Class FunctionGraphic
+
 ## [0.0.8] - 2021-05-16
 
 * Add two properties : strokeWidth and radiusPoint

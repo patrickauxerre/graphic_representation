@@ -7,18 +7,19 @@ import 'package:flutter/material.dart';
 /// Permet de dessiner tous les points et lignes en surchargeant la classe paint
 /// Hérite de CustomPainter
 class _GraphCustomPainter1 extends CustomPainter {
-  _GraphCustomPainter1({required this.listNum,
-    required this.colorAxes,
-    required this.nbGradX,
-    required this.nbGradY,
-    required this.minY,
-    required this.maxY,
-    this.colorLine,
-    this.strokeLine,
-    this.colorPoint,
-    this.radiusPoint,
-    this.colorBox,
-    this.boxWidth});
+  _GraphCustomPainter1(
+      {required this.listNum,
+      required this.colorAxes,
+      required this.nbGradX,
+      required this.nbGradY,
+      required this.minY,
+      required this.maxY,
+      this.colorLine,
+      this.strokeLine,
+      this.colorPoint,
+      this.radiusPoint,
+      this.colorBox,
+      this.boxWidth});
 
   List<num> listNum;
   Color colorAxes;
@@ -121,8 +122,7 @@ class _GraphCustomPainter1 extends CustomPainter {
       if (colorPoint != null &&
           offSets[i].dy >= 0 &&
           offSets[i].dy <= size.height) {
-        var paint2 = Paint()
-          ..color = colorPoint!;
+        var paint2 = Paint()..color = colorPoint!;
         canvas.drawCircle(offSets[i], rp, paint2);
       }
       if (colorBox != null) {
@@ -257,19 +257,20 @@ class DiscreteGraphic extends StatelessWidget {
   /// ```
   final List<String>? listGradX;
 
-  DiscreteGraphic({required this.size,
-    required this.nums,
-    required this.colorAxes,
-    required this.nbGradY,
-    this.minY,
-    this.maxY,
-    this.colorLine,
-    this.strokeLine,
-    this.colorPoint,
-    this.radiusPoint,
-    this.colorBox,
-    this.boxWidth,
-    this.listGradX});
+  DiscreteGraphic(
+      {required this.size,
+      required this.nums,
+      required this.colorAxes,
+      required this.nbGradY,
+      this.minY,
+      this.maxY,
+      this.colorLine,
+      this.strokeLine,
+      this.colorPoint,
+      this.radiusPoint,
+      this.colorBox,
+      this.boxWidth,
+      this.listGradX});
 
   double _max(List<num> nums) {
     num n = nums[0];
@@ -319,8 +320,8 @@ class DiscreteGraphic extends StatelessWidget {
             (this.listGradX == null)
                 ? ""
                 : i < listGradX!.length
-                ? listGradX![i]
-                : "",
+                    ? listGradX![i]
+                    : "",
             style: TextStyle(color: colorAxes),
             textScaleFactor: 0.8,
           ),
@@ -337,21 +338,21 @@ class DiscreteGraphic extends StatelessWidget {
               left: 50,
               child: (nums != null)
                   ? CustomPaint(
-                size: Size(size.width - 100, size.height - 40),
-                painter: _GraphCustomPainter1(
-                    listNum: nums!,
-                    colorAxes: colorAxes,
-                    colorLine: colorLine,
-                    strokeLine: strokeLine,
-                    colorPoint: colorPoint,
-                    radiusPoint: radiusPoint,
-                    colorBox: colorBox,
-                    boxWidth: boxWidth,
-                    nbGradX: (nums != null) ? nums!.length : 1,
-                    nbGradY: nbGradY,
-                    minY: min!,
-                    maxY: max!),
-              )
+                      size: Size(size.width - 100, size.height - 40),
+                      painter: _GraphCustomPainter1(
+                          listNum: nums!,
+                          colorAxes: colorAxes,
+                          colorLine: colorLine,
+                          strokeLine: strokeLine,
+                          colorPoint: colorPoint,
+                          radiusPoint: radiusPoint,
+                          colorBox: colorBox,
+                          boxWidth: boxWidth,
+                          nbGradX: (nums != null) ? nums!.length : 1,
+                          nbGradY: nbGradY,
+                          minY: min!,
+                          maxY: max!),
+                    )
                   : Container()),
           Stack(children: pos)
         ],
@@ -364,16 +365,17 @@ class DiscreteGraphic extends StatelessWidget {
 /// Permet de dessiner tous les points et lignes en surchargeant la classe paint
 /// Hérite de CustomPainter
 class _GraphCustomPainter2 extends CustomPainter {
-  _GraphCustomPainter2({required this.f,
-    required this.nbGradX,
-    required this.nbGradY,
-    required this.minX,
-    required this.maxX,
-    required this.minY,
-    required this.maxY,
-    this.colorAxes,
-    this.colorLine,
-    this.strokeLine});
+  _GraphCustomPainter2(
+      {required this.f,
+      required this.nbGradX,
+      required this.nbGradY,
+      required this.minX,
+      required this.maxX,
+      required this.minY,
+      required this.maxY,
+      this.colorAxes,
+      this.colorLine,
+      this.strokeLine});
 
   Function f;
   int nbGradX;
@@ -459,7 +461,7 @@ class _GraphCustomPainter2 extends CustomPainter {
     for (int i = 0; i < offSets.length - 1; i++) {
       if (colorLine != null) {
         var paint1 = Paint()
-          ..color = colorLine!
+          ..color = colLine!
           ..strokeWidth = sl
           ..strokeCap = StrokeCap.round;
         if (offSets[i].dy >= 0 &&

@@ -12,7 +12,7 @@ In the dependencies: section of your `pubspec.yaml, add the following line:
 
 ```yaml
 dependencies:
-    graphic_representation: ^0.0.8
+    graphic_representation: ^0.1.0
 ```
 
 ## Usage
@@ -47,30 +47,18 @@ DiscreteGraphic(
           )
 ```
 ```dart
-DiscreteGraphic(
+FunctionGraphic(
             size: Size(MediaQuery.of(context).size.width,
                 MediaQuery.of(context).size.height * 0.35),
-            nums: [3.2, 2.2, 7.1, 12.7, 14.9, 18, 19.8,21.8,19.7,14.3,9.4,5.1],
-            listGradX: [
-              "J",
-              "F",
-              "M",
-              "A",
-              "M",
-              "J",
-              "J",
-              "A",
-              "S",
-              "O",
-              "N",
-              "D"
-            ],
+            f : (x) => sin(x)/x,
             colorAxes: Colors.black,
-            nbGradY: 14,
-            colorBox: Colors.red,
-            boxWidth: 10.0,
-            minY: 0,
-            maxY: 26,
+            colorLine: Colors.purple,
+            nbGradX: 11,
+            minX: -20,
+            maxX: 20,
+            minY: -0.3,
+            maxY: 1,
+            strokeLine: 3.0,
           )
 ```
 
