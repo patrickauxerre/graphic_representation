@@ -64,7 +64,7 @@ FunctionGraphic(
 
 ## Buy me a coffee
 <p align="center">
-  <img width="218" height="400" src="https://github.com/catpat44/graphic_representation/blob/main/screenshots/buymecoffee.png?raw=true">
+  <img src="https://github.com/catpat44/graphic_representation/blob/main/screenshots/buymecoffee.png?raw=true">
 </p>
 
 
