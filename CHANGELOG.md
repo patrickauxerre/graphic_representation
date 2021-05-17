@@ -1,3 +1,7 @@
+## [0.1.2] - 2021-05-18
+
+* Add Class Circular Graphic
+
 ## [0.1.1] - 2021-05-17
 
 * Modification README.md

@@ -1,7 +1,20 @@
 library graphic_representation;
 
+import 'dart:math';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
+
+num _sumPositiveElement(List<num>? l) {
+  num s = 0;
+  if (l != null) {
+    l.forEach((element) {
+      if (element >= 0) {
+        s += element;
+      }
+    });
+  }
+  return s;
+}
 
 /// Classe interne associée à la classe DiscreteGraphic
 /// Permet de dessiner tous les points et lignes en surchargeant la classe paint
@@ -647,6 +660,207 @@ class FunctionGraphic extends StatelessWidget {
                     maxX: maxiX,
                     minY: miniY,
                     maxY: maxiY),
+              )),
+          Stack(children: pos)
+        ],
+      ),
+    );
+  }
+}
+
+/// Classe interne associée à la classe DiscreteGraphic
+/// Permet de dessiner tous les points et lignes en surchargeant la classe paint
+/// Hérite de CustomPainter
+class _GraphCustomPainter3 extends CustomPainter {
+  _GraphCustomPainter3({
+    required this.nums,
+    required this.titles,
+    required this.colors,
+  });
+
+  final List<num> nums;
+  final List<String> titles;
+  final List<Color> colors;
+
+  ///override paint : pour dessiner les axes, points, lignes suivant les valeurs contenues dans listNum
+  @override
+  void paint(Canvas canvas, Size size) {
+    var s = _sumPositiveElement(nums);
+    int index = 0;
+    double angle = 0;
+    nums.forEach((element) {
+      if (element > 0) {
+        var c = (colors.length > index) ? colors[index] : Colors.black;
+        var paint1 = Paint()
+          ..color = c
+          ..style = PaintingStyle.fill
+          ..strokeWidth = 5;
+        //draw arc
+        canvas.drawArc(
+            Offset(0, 0) & Size(size.width * 0.6, size.width * 0.6),
+            angle, //radians
+            (element / s) * 2 * pi, //radians
+            true,
+            paint1);
+        index++;
+        angle += (element / s) * 2 * pi;
+      }
+    });
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter old) {
+    return false;
+  }
+}
+
+/// Build a StatelessWidget : Container of defined size containing the graphic
+///
+/// The graph represents the function associated with the property f
+class CircularGraphic extends StatelessWidget {
+  /// The context of activity.
+  ///
+  /// ```dart
+  /// context: this.context
+  /// ```
+  final BuildContext context;
+
+  /// List of numbers containing the values to be represented.
+  ///
+  /// A negative value will not be taken into account in the representation
+  ///
+  /// ```dart
+  /// nums: [100, 200, 80, 160, 40]
+  /// ```
+  final List<num> nums;
+
+  /// List of Strings
+  ///
+  /// Contains values associated with the values of [nums]
+  ///
+  /// ```dart
+  /// titles: ["Lundi","Mardi","Mercredi","Jeudi","Vendredi"]
+  /// ```
+  final List<String> titles;
+
+  /// colors of the sectors of the circular graphic
+  ///
+  /// ```dart
+  /// colors: [Colors.black,Colors.grey,Colors.cyan,Colors.green,Colors.red]
+  /// ```
+  final List<Color> colors;
+
+  /// boolean to indicate if the percentages should be visible
+  ///
+  /// default value : false
+  ///
+  /// ```dart
+  /// colorInfo: Colors.white
+  /// ```
+  final bool? showPourcentage;
+
+  /// color of informations (number and pourcentage) in each sector
+  ///
+  /// default value : Colors.black
+  ///
+  /// ```dart
+  /// colorInfo: Colors.white
+  /// ```
+  final Color? colorsInfo;
+
+  CircularGraphic({
+    required this.context,
+    required this.nums,
+    required this.titles,
+    required this.colors,
+    this.showPourcentage,
+    this.colorsInfo,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    bool showp = (showPourcentage == null) ? false : showPourcentage!;
+    Color colInfo = (colorsInfo == null) ? Colors.black : colorsInfo!;
+    double w = MediaQuery.of(context).size.width;
+    double h = MediaQuery.of(context).size.width;
+    List<Positioned> pos = [];
+    var s = _sumPositiveElement(nums);
+    double beta = 0;
+    double rayon = w * 0.3;
+    nums.forEach((element) {
+      if (element > 0 && showp) {
+        var angle = (element / s) * 2 * pi;
+        String pourcentage = ((element / s) * 100).toStringAsFixed(1) + "%";
+        pos.add(Positioned(
+            top: rayon + sin(beta + angle / 2) * rayon * 0.6,
+            left: w * 0.5 +
+                cos(beta + angle / 2) * rayon * 0.6 -
+                pourcentage.length * w * 0.035 / 4,
+            child: Text(pourcentage,
+                style: TextStyle(
+                    color: colInfo,
+                    fontWeight: FontWeight.bold,
+                    fontSize: w * 0.035))));
+        beta += angle;
+      }
+    });
+    List<Container> containers = [];
+    for (int i = 0; i < nums.length; i++) {
+      if (nums[i] > 0) {
+        containers.add(Container(
+          width: w * 0.95,
+          height: w * 0.10,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                margin: EdgeInsets.only(left: 20),
+                width: w * 0.05,
+                height: w * 0.05,
+                color: (i < colors.length) ? colors[i] : Colors.black,
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 10),
+                child: Text(
+                  titles[i] + " (${nums[i]})",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              )
+            ],
+          ),
+        ));
+      }
+    }
+    pos.add(Positioned(
+        top: w * 0.63,
+        left: w * 0.025,
+        child: Container(
+          width: w * 0.95,
+          height: w * 0.35,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+            border: Border.all(color: Colors.black, width: 2.0),
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              children: containers,
+            ),
+          ),
+        )));
+    return Container(
+      width: w,
+      height: h,
+      child: Stack(
+        children: [
+          Positioned(
+              top: 0,
+              left: MediaQuery.of(context).size.width * 0.2,
+              child: CustomPaint(
+                size: Size(MediaQuery.of(context).size.width,
+                    MediaQuery.of(context).size.width),
+                painter: _GraphCustomPainter3(
+                    nums: nums, titles: titles, colors: colors),
               )),
           Stack(children: pos)
         ],

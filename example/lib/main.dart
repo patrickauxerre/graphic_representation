@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:graphic_representation/graphic_representation.dart';
 
@@ -43,51 +41,31 @@ class _MyHomePageState extends State<MyHomePage> {
           Padding(
               padding: EdgeInsets.only(top: 20.0, bottom: 10.0),
               child: Text(
-                "PRECIPITATIONS (mm)",
+                "VOLUME DES VENTES",
                 style: TextStyle(fontWeight: FontWeight.bold),
                 textScaleFactor: 1.6,
               )),
-          DiscreteGraphic(
-            size: Size(MediaQuery.of(context).size.width,
-                MediaQuery.of(context).size.height * 0.35),
-            nums: [1, 2, 5, 3, 7, 13, 7],
-            listGradX: [
-              "Lun",
-              "Mar",
-              "Mer",
-              "Jeu",
-              "Ven",
-              "Sam",
-              "Dim",
+          CircularGraphic(
+            context: context,
+            nums: [204, 180, 243, 231, 378, 798],
+            titles: [
+              "Lundi",
+              "Mardi",
+              "Mercredi",
+              "Jeudi",
+              "Vendredi",
+              "Samedi"
             ],
-            colorAxes: Colors.black,
-            colorLine: Colors.blue,
-            strokeLine: 2.0,
-            colorPoint: Colors.blue,
-            radiusPoint: 3.0,
-            nbGradY: 9,
-            minY: 0,
-            maxY: 16,
-          ),
-          Padding(
-              padding: EdgeInsets.only(top: 20.0, bottom: 10.0),
-              child: Text(
-                "f(x) = sin(x)/x",
-                style: TextStyle(fontWeight: FontWeight.bold),
-                textScaleFactor: 1.6,
-              )),
-          FunctionGraphic(
-            size: Size(MediaQuery.of(context).size.width,
-                MediaQuery.of(context).size.height * 0.35),
-            f: (x) => sin(x) / x,
-            colorAxes: Colors.black,
-            colorLine: Colors.purple,
-            nbGradX: 11,
-            minX: -20,
-            maxX: 20,
-            minY: -0.3,
-            maxY: 1,
-            strokeLine: 3.0,
+            colors: [
+              Colors.blue,
+              Colors.purple,
+              Colors.yellow,
+              Colors.green,
+              Colors.red,
+              Colors.brown
+            ],
+            showPourcentage: true,
+            colorsInfo: Colors.white,
           ),
         ],
       ),
