@@ -63,8 +63,8 @@ FunctionGraphic(
 ```
 
 ## Buy me a coffee
-<p align="center">
-  <img src="https://github.com/catpat44/graphic_representation/blob/main/screenshots/buymecoffee.png?raw=true">
-</p>
+<a href="https://www.buymeacoffee.com/patrickauxerre">
+  <img width="217" height="50" src="https://github.com/catpat44/graphic_representation/blob/main/screenshots/buymecoffee.png?raw=true">
+</a>
 
 
