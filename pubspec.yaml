@@ -1,6 +1,6 @@
 name: graphic_representation
 description: easy graphic representation, using classes likes DiscreteGraphic for example. You can easily adapt your graphic with your android or ios device screen.
-version: 0.1.0
+version: 0.1.1
 Author: Patrick Auxerre
 homepage: https://github.com/catpat44/graphic_representation
 
