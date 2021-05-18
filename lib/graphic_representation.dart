@@ -714,9 +714,9 @@ class _GraphCustomPainter3 extends CustomPainter {
   }
 }
 
-/// Build a StatelessWidget : Container of defined size containing the graphic
+/// Build a StatelessWidget : Container of defined size containing the circular graphic
 ///
-/// The graph represents the function associated with the property f
+/// The graph represents data in the List nums
 class CircularGraphic extends StatelessWidget {
   /// The context of activity.
   ///
