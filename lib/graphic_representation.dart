@@ -16,6 +16,39 @@ num _sumPositiveElement(List<num>? l) {
   return s;
 }
 
+num _min(List<num>? l) {
+  num min = 123456789;
+  if (l != null) {
+    min = l[0];
+    l.forEach((element) {
+      if (element < min) {
+        min = element;
+      }
+    });
+  }
+  return min;
+}
+
+num _max(List<num>? l) {
+  num max = 123456789;
+  if (l != null) {
+    max = l[0];
+    l.forEach((element) {
+      if (element > max) {
+        max = element;
+      }
+    });
+  }
+  return max;
+}
+
+class _Coord {
+  num? x;
+  num? y;
+
+  _Coord(this.x, this.y);
+}
+
 /// Classe interne associée à la classe DiscreteGraphic
 /// Permet de dessiner tous les points et lignes en surchargeant la classe paint
 /// Hérite de CustomPainter
@@ -374,7 +407,7 @@ class DiscreteGraphic extends StatelessWidget {
   }
 }
 
-/// Classe interne associée à la classe DiscreteGraphic
+/// Classe interne associée à la classe FunctionGraphic
 /// Permet de dessiner tous les points et lignes en surchargeant la classe paint
 /// Hérite de CustomPainter
 class _GraphCustomPainter2 extends CustomPainter {
@@ -401,7 +434,6 @@ class _GraphCustomPainter2 extends CustomPainter {
   Color? colorLine;
   double? strokeLine;
 
-  ///override paint : pour dessiner les axes, points, lignes suivant les valeurs contenues dans listNum
   @override
   void paint(Canvas canvas, Size size) {
     ///Initialisation des variables
@@ -668,8 +700,8 @@ class FunctionGraphic extends StatelessWidget {
   }
 }
 
-/// Classe interne associée à la classe DiscreteGraphic
-/// Permet de dessiner tous les points et lignes en surchargeant la classe paint
+/// Classe interne associée à la classe CircularGraphic
+/// Permet de dessiner tous les secteurs circulaires en surchargeant la classe paint
 /// Hérite de CustomPainter
 class _GraphCustomPainter3 extends CustomPainter {
   _GraphCustomPainter3({
@@ -682,7 +714,6 @@ class _GraphCustomPainter3 extends CustomPainter {
   final List<String> titles;
   final List<Color> colors;
 
-  ///override paint : pour dessiner les axes, points, lignes suivant les valeurs contenues dans listNum
   @override
   void paint(Canvas canvas, Size size) {
     var s = _sumPositiveElement(nums);
@@ -861,6 +892,433 @@ class CircularGraphic extends StatelessWidget {
                     MediaQuery.of(context).size.width),
                 painter: _GraphCustomPainter3(
                     nums: nums, titles: titles, colors: colors),
+              )),
+          Stack(children: pos)
+        ],
+      ),
+    );
+  }
+}
+
+/// Classe interne associée à la classe FunctionGraphic
+/// Permet de dessiner tous les points et lignes en surchargeant la classe paint
+/// Hérite de CustomPainter
+class _GraphCustomPainter4 extends CustomPainter {
+  _GraphCustomPainter4(
+      {required this.numsX,
+      required this.numsY,
+      this.nbGradX,
+      this.nbGradY,
+      this.colorAxes,
+      this.showECC,
+      this.showECD,
+      this.colorECC,
+      this.colorECD,
+      this.strokeLine,
+      this.showMedian,
+      this.colorMedian});
+
+  final List<num> numsX;
+  final List<num> numsY;
+  final int? nbGradX;
+  final int? nbGradY;
+  final Color? colorAxes;
+  final bool? showECC;
+  final bool? showECD;
+  final Color? colorECC;
+  final Color? colorECD;
+  final double? strokeLine;
+  final bool? showMedian;
+  final Color? colorMedian;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    ///Initialisation des variables
+    var nbGX = (nbGradX == null) ? 11 : nbGradX;
+    var nbGY = (nbGradY == null) ? 11 : nbGradY;
+    var colAxes = (colorAxes == null) ? Colors.black : colorAxes;
+    var colECC = (colorECC == null) ? Colors.green : colorECC;
+    var colECD = (colorECD == null) ? Colors.red : colorECD;
+    var showEcc = (showECC == null) ? true : showECC;
+    var showEcd = (showECD == null) ? false : showECD;
+    double sl = (strokeLine == null) ? 3 : strokeLine!;
+    var showMed = (showMedian == null) ? false : showMedian;
+    var colMedian = (colorMedian == null) ? Colors.red : colorMedian;
+
+    List<_Coord> coords = [];
+    for (int i = 0; i < numsX.length; i++) {
+      coords.add(_Coord(numsX[i], numsY[i]));
+    }
+    coords.sort((a, b) => a.x!.compareTo(b.x!));
+    coords.forEach((element) {
+      print(element.x);
+      print(element.y);
+    });
+
+    ///Amplitude sur l'axe horizontal
+    var deltaX = _max(numsX) - _min(numsX);
+
+    ///Draw the entire sequence of point as one line.
+    final pointMode = ui.PointMode.polygon;
+
+    ///Hauteur d'une graduation verticale
+    double gradVertical = size.height / (nbGY! - 1);
+
+    ///Pinceau pour tracé des axes
+    var paint1 = Paint()
+      ..color = colAxes!
+      ..strokeWidth = 1
+      ..strokeCap = StrokeCap.round;
+
+    ///Création des différents points puis tracé des lignes verticales avec canvas.drawPoints
+    for (int i = 0; i <= nbGY - 1; i++) {
+      var points1 = [
+        Offset(0, i * gradVertical.toDouble()),
+        Offset(size.width, i * gradVertical.toDouble()),
+      ];
+      canvas.drawPoints(pointMode, points1, paint1);
+    }
+
+    ///Largeur d'une graduation horizontale
+    double gradHorizontal = size.width / (nbGX! - 1);
+
+    ///Création des différents points puis tracé des lignes horizontales avec canvas.drawPoints
+    for (int i = 0; i <= nbGX - 1; i++) {
+      var points1 = [
+        Offset(i * gradHorizontal.toDouble(), 0),
+        Offset(i * gradHorizontal.toDouble(), size.height),
+      ];
+      canvas.drawPoints(pointMode, points1, paint1);
+    }
+
+    if (numsX.length == numsY.length) {
+      /// index de parcours dans listNum
+      int index = 0;
+
+      /// cumul des valeurs de X
+      num cumulY = 0;
+
+      /// Liste des points correspondant à ECC
+      List<Offset> offSets = [];
+
+      /// Liste des points correspondant à ECD
+      List<Offset> offSets2 = [];
+
+      /// Ajout des points ECC
+      coords.forEach((element) {
+        cumulY += element.y!;
+        offSets.add(Offset(((element.x! - _min(numsX)) / deltaX) * size.width,
+            size.height - (cumulY / _sumPositiveElement(numsY)) * size.height));
+        index++;
+      });
+
+      cumulY = _sumPositiveElement(numsY);
+      index = 0;
+
+      /// Ajout des points ECD
+      coords.forEach((element) {
+        cumulY -= element.y!;
+        offSets2.add(Offset(((element.x! - _min(numsX)) / deltaX) * size.width,
+            size.height - (cumulY / _sumPositiveElement(numsY)) * size.height));
+        index++;
+      });
+
+      /// Tracé des lignes ECC
+      if (showEcc!) {
+        for (int i = 0; i < offSets.length - 1; i++) {
+          var paint1 = Paint()
+            ..color = colECC!
+            ..strokeWidth = sl
+            ..strokeCap = StrokeCap.round;
+          if (offSets[i].dy >= 0 &&
+              offSets[i].dy <= size.height &&
+              offSets[i + 1].dy >= 0 &&
+              offSets[i + 1].dy <= size.height) {
+            canvas.drawPoints(pointMode, [offSets[i], offSets[i + 1]], paint1);
+          }
+        }
+      }
+
+      /// Tracé des lignes ECD
+      if (showEcd!) {
+        for (int i = 0; i < offSets2.length - 1; i++) {
+          var paint2 = Paint()
+            ..color = colECD!
+            ..strokeWidth = sl
+            ..strokeCap = StrokeCap.round;
+          if (offSets2[i].dy >= 0 &&
+              offSets2[i].dy <= size.height &&
+              offSets2[i + 1].dy >= 0 &&
+              offSets2[i + 1].dy <= size.height) {
+            canvas.drawPoints(
+                pointMode, [offSets2[i], offSets2[i + 1]], paint2);
+          }
+        }
+      }
+
+      /// Tracé des points ECC
+      if (showEcc) {
+        for (int i = 0; i <= offSets.length - 1; i++) {
+          var paint2 = Paint()..color = colECC!;
+          canvas.drawCircle(offSets[i], 4.0, paint2);
+        }
+      }
+
+      /// Tracé des points ECD
+      if (showEcd) {
+        for (int i = 0; i <= offSets2.length - 1; i++) {
+          var paint2 = Paint()..color = colECD!;
+          canvas.drawCircle(offSets2[i], 4.0, paint2);
+        }
+      }
+
+      /// Calcul et affichage de la médiane
+      if (showMed!) {
+        var indexCible = 0;
+        num cumul = 0;
+        while (cumul < _sumPositiveElement(numsY) / 2) {
+          cumul += coords[indexCible].y!;
+          indexCible++;
+        }
+        indexCible--;
+        print(indexCible);
+        num xA = coords[indexCible - 1].x!;
+        num cum = 0;
+        for (int i = 0; i <= indexCible - 1; i++) {
+          cum += coords[i].y!;
+        }
+        num yA = cum;
+        num xB = coords[indexCible].x!;
+        num yB = coords[indexCible].y! + cum;
+        double a = (yB - yA) / (xB - xA);
+        double b = yA - a * xA;
+        double med = (_sumPositiveElement(numsY) / 2 - b) / a;
+        print(med);
+        var offSetMedian = Offset(
+            ((med - _min(numsX)) / deltaX) * size.width, 0.5 * size.height);
+        var paint = Paint()..color = colMedian!;
+        canvas.drawCircle(offSetMedian, 4.0, paint);
+        TextSpan span = TextSpan(
+            style: TextStyle(
+                color: colMedian,
+                fontWeight: FontWeight.bold,
+                fontStyle: FontStyle.italic,
+                fontSize: 20),
+            text: "m = " + med.toStringAsFixed(1));
+        TextPainter tp = TextPainter(
+            text: span,
+            textAlign: TextAlign.left,
+            textDirection: TextDirection.ltr);
+        tp.layout();
+        tp.paint(canvas, Offset(offSetMedian.dx + 15, offSetMedian.dy - 12));
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter old) {
+    return false;
+  }
+}
+
+/// Build a StatelessWidget : Container of defined size containing the ECC-ECD graphic
+///
+/// The graph represents data in the List numsX and numsY
+class EccEcdGraphic extends StatelessWidget {
+  /// The size of the container returned.
+  ///
+  /// ```dart
+  /// size: Size(MediaQuery.of(context).size.width,MediaQuery.of(context).size.height * 0.4)
+  /// ```
+  final Size size;
+
+  /// List of numbers containing the values of the x-coordinates of the points represented.
+  ///
+  /// ```dart
+  /// numsX: [0, 10, 20, 30, 50,70,100]
+  /// ```
+  final List<num> numsX;
+
+  /// List of numbers containing the values of the y-coordinates of the points represented.
+  ///
+  /// A negative value will not be taken into account in the representation
+  ///
+  /// ```dart
+  /// numsY: [38, 53, 86, 27, 18, 15, 10]
+  /// ```
+  final List<num> numsY;
+
+  /// Number of graduations on the horizontal axis
+  ///
+  /// Default value : 11.
+  ///
+  /// ```dart
+  /// nbGradX: 11
+  /// ```
+  final int? nbGradX;
+
+  /// Number of graduations on the vertical axis
+  ///
+  /// Default value : 11.
+  ///
+  /// ```dart
+  /// nbGradY: 11
+  /// ```
+  final int? nbGradY;
+
+  /// colors of the axes of the graphic
+  ///
+  /// Default value : Colors.black
+  ///
+  /// ```dart
+  /// colorAxes: Colors.black
+  /// ```
+  final Color? colorAxes;
+
+  /// boolean to indicate if the ECC graphic must be visible
+  ///
+  /// default value : true
+  ///
+  /// ```dart
+  /// showECC: false
+  /// ```
+  final bool? showECC;
+
+  /// boolean to indicate if the ECD graphic must be visible
+  ///
+  /// default value : false
+  ///
+  /// ```dart
+  /// showECD: true
+  /// ```
+  final bool? showECD;
+
+  /// colors of the lines of the ECC graphic
+  ///
+  /// Default value : Colors.green
+  ///
+  /// ```dart
+  /// colorECC: Colors.purple
+  /// ```
+  final Color? colorECC;
+
+  /// colors of the lines of the ECD graphic
+  ///
+  /// Default value : Colors.red
+  ///
+  /// ```dart
+  /// colorECD: Colors.blue
+  /// ```
+  final Color? colorECD;
+
+  /// Stoke  of the lines.
+  ///
+  /// Default value : 3.0
+  ///
+  /// ```dart
+  /// strokeLine: 4.0
+  /// ```
+  final double? strokeLine;
+
+  /// boolean to indicate if the value of median must be visible
+  ///
+  /// default value : false
+  ///
+  /// ```dart
+  /// pourcentageMode: true
+  /// ```
+  final bool? pourcentageMode;
+
+  /// boolean to indicate if the value of median must be visible
+  ///
+  /// default value : false
+  ///
+  /// ```dart
+  /// showECD: true
+  /// ```
+  final bool? showMedian;
+
+  /// colors of median info
+  ///
+  /// Default value : Colors.red
+  ///
+  /// ```dart
+  /// colorMedian: Colors.black
+  /// ```
+  final Color? colorMedian;
+
+  EccEcdGraphic(
+      {required this.size,
+      required this.numsX,
+      required this.numsY,
+      this.nbGradX,
+      this.nbGradY,
+      this.colorAxes,
+      this.showECC,
+      this.showECD,
+      this.colorECC,
+      this.colorECD,
+      this.strokeLine,
+      this.pourcentageMode,
+      this.showMedian,
+      this.colorMedian});
+
+  @override
+  Widget build(BuildContext context) {
+    int nbGX = (nbGradX != null) ? nbGradX! : 11;
+    int nbGY = (nbGradY != null) ? nbGradY! : 11;
+    double stepY = (size.height - 40) / (nbGY - 1);
+    List<Positioned> pos = [];
+    bool? pm = (pourcentageMode == null) ? false : pourcentageMode;
+    var maxiY = (pm!) ? 100 : _sumPositiveElement(numsY);
+    for (int i = 0; i <= nbGY - 1; i++) {
+      String prc = (pm) ? "%" : "";
+      pos.add(Positioned(
+        top: size.height - i * stepY - 36,
+        right: size.width - 45,
+        child: Text(
+          (i * maxiY / (nbGY - 1)).toStringAsFixed(1) + prc,
+          style: TextStyle(color: colorAxes),
+          textScaleFactor: 0.6,
+        ),
+      ));
+    }
+    double stepX = (size.width - 100) / (nbGX - 1);
+    for (int i = 0; i <= nbGX - 1; i++) {
+      pos.add(Positioned(
+        top: size.height - 25,
+        left: i * stepX + 40,
+        child: Text(
+          (_min(numsX) + i * (_max(numsX) - _min(numsX)) / (nbGX - 1))
+              .toStringAsFixed(1),
+          style: TextStyle(color: colorAxes),
+          textScaleFactor: 0.6,
+        ),
+      ));
+    }
+    return Container(
+      width: size.width,
+      height: size.height,
+      child: Stack(
+        children: [
+          Positioned(
+              top: 10,
+              left: 50,
+              child: CustomPaint(
+                size: Size(size.width - 100, size.height - 40),
+                painter: _GraphCustomPainter4(
+                    numsX: numsX,
+                    numsY: numsY,
+                    nbGradX: nbGradX,
+                    nbGradY: nbGradY,
+                    colorAxes: colorAxes,
+                    showECC: showECC,
+                    showECD: showECD,
+                    colorECC: colorECC,
+                    colorECD: colorECD,
+                    strokeLine: strokeLine,
+                    showMedian: showMedian,
+                    colorMedian: colorMedian),
               )),
           Stack(children: pos)
         ],

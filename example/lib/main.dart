@@ -1,5 +1,6 @@
 import 'package:example/circular_graphic_page.dart';
 import 'package:example/discrete_graphic_page.dart';
+import 'package:example/ecc_ecd_graphic_page.dart';
 import 'package:example/function_graphic_page.dart';
 import 'package:flutter/material.dart';
 
@@ -25,6 +26,8 @@ class MyApp extends StatelessWidget {
             FunctionGraphicPage(),
         "circular_graphic_page": (BuildContext context) =>
             CircularGraphicPage(),
+        "ecc_ecd_graphic_page": (BuildContext context) =>
+            EccEcdGraphicPage(),
       },
       debugShowCheckedModeBanner: false,
     );
@@ -69,7 +72,8 @@ class _MyHomePageState extends State<MyHomePage> {
         children: <Widget>[
           myButton(context, "DiscreteGraphic", "discrete_graphic_page"),
           myButton(context, "FunctionGraphic", "function_graphic_page"),
-          myButton(context, "CircularGraphic", "circular_graphic_page")
+          myButton(context, "CircularGraphic", "circular_graphic_page"),
+          myButton(context, "EccEcdGraphic", "ecc_ecd_graphic_page")
         ],
       )),
     );
