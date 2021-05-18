@@ -12,7 +12,7 @@ In the dependencies: section of your `pubspec.yaml, add the following line:
 
 ```yaml
 dependencies:
-    graphic_representation: ^0.1.1
+    graphic_representation: ^1.0.0
 ```
 
 ## Usage
@@ -22,6 +22,13 @@ import 'package:graphic_representation/graphic_representation.dart';
 ```
 
 ## Example
+
+### Class DiscreteGraphic
+Build a StatelessWidget : Container of defined size containing the graphic  
+The graphic can contain different elements :  
+* Points if colorPoint is defined.
+* Lines if colorLine is defined.
+* Verticals bars if colorBox is defined.
 ```dart
 DiscreteGraphic(
             size: Size(MediaQuery.of(context).size.width,
@@ -46,6 +53,10 @@ DiscreteGraphic(
             maxY: 16,
           )
 ```
+
+### Class FunctionGraphic
+Build a StatelessWidget : Container of defined size containing the graphic  
+The graph represents the function associated with the property f  
 ```dart
 FunctionGraphic(
             size: Size(MediaQuery.of(context).size.width,
@@ -59,6 +70,34 @@ FunctionGraphic(
             minY: -0.3,
             maxY: 1,
             strokeLine: 3.0,
+          )
+```
+
+### Class CircularGraphic
+Build a StatelessWidget : Container of defined size containing the circular graphic  
+The graph represents data in the List nums  
+```dart
+CircularGraphic(
+            context: context,
+            nums: [204, 180, 243, 231, 378, 798],
+            titles: [
+              "Lundi",
+              "Mardi",
+              "Mercredi",
+              "Jeudi",
+              "Vendredi",
+              "Samedi"
+            ],
+            colors: [
+              Colors.blue,
+              Colors.purple,
+              Colors.yellow,
+              Colors.green,
+              Colors.red,
+              Colors.brown
+            ],
+            showPourcentage: true,
+            colorsInfo: Colors.white,
           )
 ```
 

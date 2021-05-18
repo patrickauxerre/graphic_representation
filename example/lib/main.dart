@@ -1,5 +1,7 @@
+import 'package:example/circular_graphic_page.dart';
+import 'package:example/discrete_graphic_page.dart';
+import 'package:example/function_graphic_page.dart';
 import 'package:flutter/material.dart';
-import 'package:graphic_representation/graphic_representation.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,10 +15,36 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Graphic_Representation : example'),
+      initialRoute: "/",
+      routes: <String, WidgetBuilder>{
+        "/": (BuildContext context) =>
+            MyHomePage(title: 'Graphic_Representation : examples'),
+        "discrete_graphic_page": (BuildContext context) =>
+            DiscreteGraphicPage(),
+        "function_graphic_page": (BuildContext context) =>
+            FunctionGraphicPage(),
+        "circular_graphic_page": (BuildContext context) =>
+            CircularGraphicPage(),
+      },
       debugShowCheckedModeBanner: false,
     );
   }
+}
+
+ElevatedButton myButton(BuildContext context, String title, String pushName) {
+  return ElevatedButton(
+      onPressed: () {
+        Navigator.pushNamed(context, pushName);
+      },
+      style: ElevatedButton.styleFrom(
+        primary: Colors.blueAccent,
+      ),
+      child: Padding(
+          padding: EdgeInsets.all(10.0),
+          child: Text(
+            title,
+            textScaleFactor: 2.0,
+          )));
 }
 
 class MyHomePage extends StatefulWidget {
@@ -35,40 +63,15 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
+      body: Center(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          Padding(
-              padding: EdgeInsets.only(top: 20.0, bottom: 10.0),
-              child: Text(
-                "VOLUME DES VENTES",
-                style: TextStyle(fontWeight: FontWeight.bold),
-                textScaleFactor: 1.6,
-              )),
-          CircularGraphic(
-            context: context,
-            nums: [204, 180, 243, 231, 378, 798],
-            titles: [
-              "Lundi",
-              "Mardi",
-              "Mercredi",
-              "Jeudi",
-              "Vendredi",
-              "Samedi"
-            ],
-            colors: [
-              Colors.blue,
-              Colors.purple,
-              Colors.yellow,
-              Colors.green,
-              Colors.red,
-              Colors.brown
-            ],
-            showPourcentage: true,
-            colorsInfo: Colors.white,
-          ),
+          myButton(context, "DiscreteGraphic", "discrete_graphic_page"),
+          myButton(context, "FunctionGraphic", "function_graphic_page"),
+          myButton(context, "CircularGraphic", "circular_graphic_page")
         ],
-      ),
+      )),
     );
   }
 }

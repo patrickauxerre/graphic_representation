@@ -808,8 +808,8 @@ class CircularGraphic extends StatelessWidget {
     for (int i = 0; i < nums.length; i++) {
       if (nums[i] > 0) {
         containers.add(Container(
-          width: w * 0.95,
-          height: w * 0.10,
+          width: w * 0.90,
+          height: w * 0.08,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -834,9 +834,9 @@ class CircularGraphic extends StatelessWidget {
     }
     pos.add(Positioned(
         top: w * 0.63,
-        left: w * 0.025,
+        left: w * 0.05,
         child: Container(
-          width: w * 0.95,
+          width: w * 0.90,
           height: w * 0.35,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.0),

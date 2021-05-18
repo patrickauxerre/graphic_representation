@@ -1,3 +1,8 @@
+## [1.0.0] - 2021-05-18
+
+* Modification of example.
+* Modification dartdoc
+
 ## [0.1.2] - 2021-05-18
 
 * Add Class Circular Graphic
