@@ -12,7 +12,7 @@ In the dependencies: section of your `pubspec.yaml, add the following line:
 
 ```yaml
 dependencies:
-    graphic_representation: ^1.0.0
+    graphic_representation: ^1.0.2
 ```
 
 ## Usage
@@ -99,6 +99,28 @@ CircularGraphic(
             showPourcentage: true,
             colorsInfo: Colors.white,
           )
+```
+
+### Class CircularGraphic
+Build a StatelessWidget : Container of defined size containing the ECC-ECD graphic  
+The graph represents data in the List numsX and numsY  
+```dart
+EccEcdGraphic(
+          size: Size(MediaQuery.of(context).size.width,
+              MediaQuery.of(context).size.height * 0.6),
+          numsX: [0, 30, 15, 40, 50, 70, 130],
+          numsY: [0, 23, 117, 27, 18, 39, 350],
+          pourcentageMode: true,
+          nbGradX: 14,
+          nbGradY: 21,
+          showECC: true,
+          showECD: true,
+          colorECC: Colors.purple,
+          colorECD: Colors.brown,
+          strokeLine: 2.0,
+          showMedian: true,
+          colorMedian: Colors.black,
+        )
 ```
 
 ## Buy me a coffee

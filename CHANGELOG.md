@@ -1,3 +1,11 @@
+## [1.0.2] - 2021-05-18
+
+* modification README.
+
+## [1.0.1] - 2021-05-18
+
+* Add class EccEcdGraphic.
+
 ## [1.0.0] - 2021-05-18
 
 * Modification of example.
