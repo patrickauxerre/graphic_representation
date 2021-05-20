@@ -1,3 +1,8 @@
+## [1.0.3] - 2021-05-18
+
+* modification class FunctionGraphic : possibility to draw several curves and to use parameterized functions 
+* modification README.
+
 ## [1.0.2] - 2021-05-18
 
 * modification README.

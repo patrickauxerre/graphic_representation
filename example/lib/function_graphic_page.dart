@@ -29,14 +29,17 @@ class FunctionGraphicPage extends StatelessWidget {
             padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
             child: Text(
               "h(x) = sin(x/2)",
-              style:
-              TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
               textScaleFactor: 1.6,
             )),
         FunctionGraphic(
           size: Size(MediaQuery.of(context).size.width,
               MediaQuery.of(context).size.height * 0.5),
-          functions: [(x) => exp(-x * x/8), (x) => sin(x) / x, (x) => sin(x/2)],
+          functions: [
+            (x) => exp(-x * x / 8),
+            (x) => sin(x) / x,
+            (x) => sin(x / 2)
+          ],
           functionsXt: [],
           functionsYt: [],
           colorAxes: Colors.black,

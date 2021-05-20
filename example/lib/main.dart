@@ -27,8 +27,7 @@ class MyApp extends StatelessWidget {
             FunctionGraphicPage(),
         "circular_graphic_page": (BuildContext context) =>
             CircularGraphicPage(),
-        "ecc_ecd_graphic_page": (BuildContext context) =>
-            EccEcdGraphicPage(),
+        "ecc_ecd_graphic_page": (BuildContext context) => EccEcdGraphicPage(),
         "parametrized_graphic_page": (BuildContext context) =>
             ParametrizedGraphicPage(),
       },
