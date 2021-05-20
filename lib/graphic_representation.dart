@@ -412,33 +412,42 @@ class DiscreteGraphic extends StatelessWidget {
 /// Hérite de CustomPainter
 class _GraphCustomPainter2 extends CustomPainter {
   _GraphCustomPainter2(
-      {required this.f,
+      {required this.functions,
+      required this.functionsXt,
+      required this.functionsYt,
       required this.nbGradX,
       required this.nbGradY,
       required this.minX,
       required this.maxX,
       required this.minY,
       required this.maxY,
+      required this.minT,
+      required this.maxT,
       this.colorAxes,
-      this.colorLine,
+      this.colors,
+      this.colorsParam,
       this.strokeLine});
 
-  Function f;
+  List<Function> functions;
+  List<Function> functionsXt;
+  List<Function> functionsYt;
   int nbGradX;
   int nbGradY;
   double minX;
   double maxX;
   double minY;
   double maxY;
+  double minT;
+  double maxT;
   Color? colorAxes;
-  Color? colorLine;
+  List<Color>? colors;
+  List<Color>? colorsParam;
   double? strokeLine;
 
   @override
   void paint(Canvas canvas, Size size) {
     ///Initialisation des variables
     var colAxes = (colorAxes == null) ? Colors.black : colorAxes;
-    var colLine = (colorLine == null) ? Colors.red : colorLine;
     double sl = (strokeLine == null) ? 3 : strokeLine!;
 
     ///Amplitude sur l'axe vertical
@@ -486,27 +495,36 @@ class _GraphCustomPainter2 extends CustomPainter {
     /// Largeur entre deux points
     var nbPoints = size.width ~/ espacementX;
 
-    /// Liste des points correspondant à listNum
+    /// Liste des points à tracer
     List<Offset> offSets = [];
 
-    /// Ajout des points
-    for (int j = 0; j <= nbPoints; j++) {
-      double x = minX + (j / nbPoints) * deltaX;
-      try {
-        if (f(x) != null) {
-          offSets.add(Offset(j * espacementX,
-              size.height - ((f(x) - minY) / deltaY) * size.height));
-        }
-      } catch (e) {
-        print(e);
-      }
-    }
+    /// Tracé des functions non paramétrées : List functions
+    for (int index = 0; index < functions.length; index++) {
+      offSets.clear();
 
-    /// Tracé des lignes si colorLine != null
-    for (int i = 0; i < offSets.length - 1; i++) {
-      if (colorLine != null) {
+      /// Ajout des points
+      for (int j = 0; j <= nbPoints; j++) {
+        double x = minX + (j / nbPoints) * deltaX;
+        try {
+          if (functions[index](x) != null) {
+            offSets.add(Offset(
+                j * espacementX,
+                size.height -
+                    ((functions[index](x) - minY) / deltaY) * size.height));
+          }
+        } catch (e) {
+          print(e);
+        }
+      }
+
+      /// Tracé des lignes si colorLine != null
+      for (int i = 0; i < offSets.length - 1; i++) {
+        Color col = Colors.brown;
+        if (colors != null && colors!.length >= index) {
+          col = colors![index];
+        }
         var paint1 = Paint()
-          ..color = colLine!
+          ..color = col
           ..strokeWidth = sl
           ..strokeCap = StrokeCap.round;
         if (offSets[i].dy >= 0 &&
@@ -514,6 +532,52 @@ class _GraphCustomPainter2 extends CustomPainter {
             offSets[i + 1].dy >= 0 &&
             offSets[i + 1].dy <= size.height) {
           canvas.drawPoints(pointMode, [offSets[i], offSets[i + 1]], paint1);
+        }
+      }
+    }
+
+    /// Tracé des fonctions paramétrées : List functionsXt et functionsYt
+
+    for (int index = 0; index < functionsXt.length; index++) {
+      offSets.clear();
+      if (functionsYt.length > index) {
+        /// Ajout des points
+        var step = (maxT - minT) / 1000;
+        for (int j = 0; j <= 1000; j++) {
+          var t = minT + step * j;
+          try {
+            if (functionsXt[index](t) != null &&
+                functionsYt[index](t) != null) {
+              offSets.add(Offset(
+                  ((functionsXt[index](t) - minX) / deltaX) * size.width,
+                  size.height -
+                      ((functionsYt[index](t) - minY) / deltaY) * size.height));
+            }
+          } catch (e) {
+            print(e);
+          }
+        }
+
+        /// Tracé des lignes si colorLine != null
+        for (int i = 0; i < offSets.length - 1; i++) {
+          Color col = Colors.brown;
+          if (colorsParam != null && colorsParam!.length > index) {
+            col = colorsParam![index];
+          }
+          var paint1 = Paint()
+            ..color = col
+            ..strokeWidth = sl
+            ..strokeCap = StrokeCap.round;
+          if (offSets[i].dy >= 0 &&
+              offSets[i].dy <= size.height &&
+              offSets[i + 1].dy >= 0 &&
+              offSets[i + 1].dy <= size.height &&
+              offSets[i].dx >= 0 &&
+              offSets[i].dx <= size.width &&
+              offSets[i + 1].dx >= 0 &&
+              offSets[i + 1].dx <= size.width) {
+            canvas.drawPoints(pointMode, [offSets[i], offSets[i + 1]], paint1);
+          }
         }
       }
     }
@@ -536,12 +600,26 @@ class FunctionGraphic extends StatelessWidget {
   /// ```
   final Size size;
 
-  /// The function to be represented.
+  /// List of functions to be represented.
   ///
   /// ```dart
-  /// f : (x) => x + 1
+  /// functions : [(x) => x*x, (x) => 2*x - 1, (x) => pow(x,3)]
   /// ```
-  final Function f;
+  final List<Function> functions;
+
+  /// List of functions parametrized : return abscissa of the point of the curve with parameter t.
+  ///
+  /// ```dart
+  /// functionsXt: [(t) => t*cos(t),(t) => 10*cos(2*t)*cos(t)]
+  /// ```
+  final List<Function> functionsXt;
+
+  /// List of functions parametrized : return ordinate of the point of the curve with parameter t.
+  ///
+  /// ```dart
+  /// functionsYt: [(t) => t*sin(t),(t) => 10*cos(2*t)*sin(t)]
+  /// ```
+  final List<Function> functionsYt;
 
   /// colors of the axes of the graphic
   ///
@@ -606,14 +684,41 @@ class FunctionGraphic extends StatelessWidget {
   /// ```
   final double? maxY;
 
-  /// colors of the graphic.
+  /// Minimum value of the parameter t.
   ///
-  /// Default value : Colors.red
+  /// Default value : -2*pi.
   ///
   /// ```dart
-  /// colorLine: Colors.blue
+  /// minT: -4
   /// ```
-  final Color? colorLine;
+  final double? minT;
+
+  /// Maximum value of the parameter t.
+  ///
+  /// Default value : 2*pi.
+  ///
+  /// ```dart
+  /// maxT: 4
+  /// ```
+  final double? maxT;
+
+  /// colors of the curves associated with the List functions.
+  ///
+  /// If no value associated in the list, Colors.brown is provided.
+  ///
+  /// ```dart
+  /// colors: [Colors.blue,Colors.red,Colors.purple]
+  /// ```
+  final List<Color>? colors;
+
+  /// colors of the curves associated with the List functionsXt and functionsYt.
+  ///
+  /// If no value associated in the list, Colors.brown is provided.
+  ///
+  /// ```dart
+  /// colorsParam: [Colors.blue,Colors.red]
+  /// ```
+  final List<Color>? colorsParam;
 
   /// Stoke  of the lines.
   ///
@@ -627,14 +732,19 @@ class FunctionGraphic extends StatelessWidget {
   FunctionGraphic({
     required this.size,
     required this.colorAxes,
-    required this.f,
+    required this.functions,
+    required this.functionsXt,
+    required this.functionsYt,
     this.nbGradX,
     this.nbGradY,
     this.minX,
     this.maxX,
     this.minY,
     this.maxY,
-    this.colorLine,
+    this.minT,
+    this.maxT,
+    this.colors,
+    this.colorsParam,
     this.strokeLine,
   });
 
@@ -642,8 +752,10 @@ class FunctionGraphic extends StatelessWidget {
   Widget build(BuildContext context) {
     double miniX = (minX != null) ? minX! : -5;
     double miniY = (minY != null) ? minY! : -5;
+    double miniT = (minT != null) ? minT! : -2 * pi;
     double maxiX = (maxX != null) ? maxX! : 5;
     double maxiY = (maxY != null) ? maxY! : 5;
+    double maxiT = (maxT != null) ? maxT! : 2 * pi;
     int nbGX = (nbGradX != null) ? nbGradX! : 11;
     int nbGY = (nbGradY != null) ? nbGradY! : 11;
     double stepY = (size.height - 40) / (nbGY - 1);
@@ -682,16 +794,21 @@ class FunctionGraphic extends StatelessWidget {
               child: CustomPaint(
                 size: Size(size.width - 100, size.height - 40),
                 painter: _GraphCustomPainter2(
-                    f: f,
+                    functions: functions,
+                    functionsXt: functionsXt,
+                    functionsYt: functionsYt,
                     colorAxes: colorAxes,
-                    colorLine: colorLine,
+                    colors: colors,
+                    colorsParam: colorsParam,
                     strokeLine: strokeLine,
                     nbGradX: nbGX,
                     nbGradY: nbGY,
                     minX: miniX,
                     maxX: maxiX,
                     minY: miniY,
-                    maxY: maxiY),
+                    maxY: maxiY,
+                    minT: miniT,
+                    maxT: maxiT),
               )),
           Stack(children: pos)
         ],

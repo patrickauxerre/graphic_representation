@@ -12,40 +12,39 @@ class FunctionGraphicPage extends StatelessWidget {
         Padding(
             padding: EdgeInsets.only(top: 50.0, bottom: 10.0),
             child: Text(
-              "f(x) = exp(-x²)",
-              style: TextStyle(fontWeight: FontWeight.bold),
+              "f(x) = exp(-x²/8)",
+              style:
+                  TextStyle(fontWeight: FontWeight.bold, color: Colors.purple),
               textScaleFactor: 1.6,
             )),
-        FunctionGraphic(
-          size: Size(MediaQuery.of(context).size.width,
-              MediaQuery.of(context).size.height * 0.35),
-          f: (x) => exp(-x * x),
-          colorAxes: Colors.black,
-          colorLine: Colors.purple,
-          nbGradX: 11,
-          minX: -3,
-          maxX: 3,
-          minY: 0,
-          maxY: 1,
-          strokeLine: 3.0,
-        ),
         Padding(
-            padding: EdgeInsets.only(top: 20.0, bottom: 10.0),
+            padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
             child: Text(
-              "f(x) = sin(x)/x",
-              style: TextStyle(fontWeight: FontWeight.bold),
+              "g(x) = sin(x)/x",
+              style:
+                  TextStyle(fontWeight: FontWeight.bold, color: Colors.green),
+              textScaleFactor: 1.6,
+            )),
+        Padding(
+            padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+            child: Text(
+              "h(x) = sin(x/2)",
+              style:
+              TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
               textScaleFactor: 1.6,
             )),
         FunctionGraphic(
           size: Size(MediaQuery.of(context).size.width,
-              MediaQuery.of(context).size.height * 0.35),
-          f: (x) => sin(x) / x,
+              MediaQuery.of(context).size.height * 0.5),
+          functions: [(x) => exp(-x * x/8), (x) => sin(x) / x, (x) => sin(x/2)],
+          functionsXt: [],
+          functionsYt: [],
           colorAxes: Colors.black,
-          colorLine: Colors.purple,
+          colors: [Colors.purple, Colors.green, Colors.red],
           nbGradX: 11,
-          minX: -20,
-          maxX: 20,
-          minY: -0.3,
+          minX: -10,
+          maxX: 10,
+          minY: -1,
           maxY: 1,
           strokeLine: 3.0,
         ),

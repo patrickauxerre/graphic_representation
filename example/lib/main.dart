@@ -2,6 +2,7 @@ import 'package:example/circular_graphic_page.dart';
 import 'package:example/discrete_graphic_page.dart';
 import 'package:example/ecc_ecd_graphic_page.dart';
 import 'package:example/function_graphic_page.dart';
+import 'package:example/parametrized_graphic_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -28,6 +29,8 @@ class MyApp extends StatelessWidget {
             CircularGraphicPage(),
         "ecc_ecd_graphic_page": (BuildContext context) =>
             EccEcdGraphicPage(),
+        "parametrized_graphic_page": (BuildContext context) =>
+            ParametrizedGraphicPage(),
       },
       debugShowCheckedModeBanner: false,
     );
@@ -71,7 +74,8 @@ class _MyHomePageState extends State<MyHomePage> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           myButton(context, "DiscreteGraphic", "discrete_graphic_page"),
-          myButton(context, "FunctionGraphic", "function_graphic_page"),
+          myButton(context, "FunctionGraphic1", "function_graphic_page"),
+          myButton(context, "FunctionGraphic2", "parametrized_graphic_page"),
           myButton(context, "CircularGraphic", "circular_graphic_page"),
           myButton(context, "EccEcdGraphic", "ecc_ecd_graphic_page")
         ],
