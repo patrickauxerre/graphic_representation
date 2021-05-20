@@ -59,18 +59,39 @@ Build a StatelessWidget : Container of defined size containing the graphic
 The graph represents the function associated with the property f  
 ```dart
 FunctionGraphic(
-            size: Size(MediaQuery.of(context).size.width,
-                MediaQuery.of(context).size.height * 0.35),
-            f : (x) => sin(x)/x,
-            colorAxes: Colors.black,
-            colorLine: Colors.purple,
-            nbGradX: 11,
-            minX: -20,
-            maxX: 20,
-            minY: -0.3,
-            maxY: 1,
-            strokeLine: 3.0,
-          )
+          size: Size(MediaQuery.of(context).size.width,
+              MediaQuery.of(context).size.height * 0.5),
+          functions: [(x) => exp(-x * x/8), (x) => sin(x) / x, (x) => sin(x/2)],
+          functionsXt: [],
+          functionsYt: [],
+          colorAxes: Colors.black,
+          colors: [Colors.purple, Colors.green, Colors.red],
+          nbGradX: 11,
+          minX: -10,
+          maxX: 10,
+          minY: -1,
+          maxY: 1,
+          strokeLine: 3.0,
+        )
+```
+```dart
+FunctionGraphic(
+              size: Size(MediaQuery.of(context).size.width,
+                  MediaQuery.of(context).size.height * 0.35),
+              functions: [],
+              functionsXt: [(t) => sin(2*t)],
+              functionsYt: [(t) => sin(3*t)],
+              colorAxes: Colors.black,
+              colorsParam: [Colors.purple],
+              nbGradX: 11,
+              minT: -pi,
+              maxT: pi,
+              minX: -1,
+              maxX: 1,
+              minY: -1,
+              maxY: 1,
+              strokeLine: 3.0,
+            )
 ```
 
 ### Class CircularGraphic
