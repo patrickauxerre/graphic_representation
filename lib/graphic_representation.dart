@@ -17,7 +17,7 @@ num _sumPositiveElement(List<num>? l) {
 }
 
 num _min(List<num>? l) {
-  num min = 123456789;
+  num min = -123456789;
   if (l != null) {
     min = l[0];
     l.forEach((element) {

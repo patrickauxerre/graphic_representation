@@ -12,7 +12,7 @@ In the dependencies: section of your `pubspec.yaml, add the following line:
 
 ```yaml
 dependencies:
-    graphic_representation: ^1.0.4
+    graphic_representation: ^1.0.5
 ```
 
 ## Usage
@@ -123,7 +123,7 @@ CircularGraphic(
           )
 ```
 
-### Class CircularGraphic
+### Class EccEcdGraphic
 Build a StatelessWidget : Container of defined size containing the ECC-ECD graphic  
 The graph represents data in the List numsX and numsY  
 ```dart
