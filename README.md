@@ -56,7 +56,7 @@ DiscreteGraphic(
 
 ### Class FunctionGraphic
 Build a StatelessWidget : Container of defined size containing the graphic  
-The graph represents the function associated with the property f  
+The graph represents the functions associated with the property functions and functionsXt / functionsYt for parametrized functions.  
 ```dart
 FunctionGraphic(
           size: Size(MediaQuery.of(context).size.width,
