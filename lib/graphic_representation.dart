@@ -49,6 +49,15 @@ class _Coord {
   _Coord(this.x, this.y);
 }
 
+TextPainter _textpainter(
+    Color colorFont, FontWeight fw, double fontSize, String text) {
+  TextSpan span = TextSpan(
+      style: TextStyle(color: colorFont, fontWeight: fw, fontSize: fontSize),
+      text: text);
+  TextPainter tp = TextPainter(text: span, textDirection: TextDirection.ltr);
+  return tp;
+}
+
 /// Classe interne associée à la classe DiscreteGraphic
 /// Permet de dessiner tous les points et lignes en surchargeant la classe paint
 /// Hérite de CustomPainter
@@ -1215,17 +1224,8 @@ class _GraphCustomPainter4 extends CustomPainter {
             ((med - _min(numsX)) / deltaX) * size.width, 0.5 * size.height);
         var paint = Paint()..color = colMedian!;
         canvas.drawCircle(offSetMedian, 4.0, paint);
-        TextSpan span = TextSpan(
-            style: TextStyle(
-                color: colMedian,
-                fontWeight: FontWeight.bold,
-                fontStyle: FontStyle.italic,
-                fontSize: 20),
-            text: "m = " + med.toStringAsFixed(1));
-        TextPainter tp = TextPainter(
-            text: span,
-            textAlign: TextAlign.left,
-            textDirection: TextDirection.ltr);
+        var tp = _textpainter(
+            colMedian, FontWeight.bold, 20, "m = " + med.toStringAsFixed(1));
         tp.layout();
         tp.paint(canvas, Offset(offSetMedian.dx + 15, offSetMedian.dy - 12));
       }
@@ -1438,6 +1438,360 @@ class EccEcdGraphic extends StatelessWidget {
                     colorMedian: colorMedian),
               )),
           Stack(children: pos)
+        ],
+      ),
+    );
+  }
+}
+
+class TableValues extends StatelessWidget {
+  /// The size of the container returned.
+  ///
+  /// ```dart
+  /// size: Size(MediaQuery.of(context).size.width,MediaQuery.of(context).size.height * 0.2)
+  /// ```
+  final Size size;
+
+  /// The String describing the function.
+  ///
+  /// default value : "f(x)"
+  ///
+  /// ```dart
+  /// functionName: 'x² - 3'
+  /// ```
+  final String? functionName;
+
+  /// The function : if numsY is null, the y-values will be calculated with the expression
+  ///
+  /// ```dart
+  /// f: '(x) => pow(x,3) - 2'
+  /// ```
+  final Function? f;
+
+  /// The x-values of the table values.
+  ///
+  /// ```dart
+  /// numsX: [-2,-1.5,-1,-0.5,0,0.5,1,1.5,2]
+  /// ```
+  final List<num> numsX;
+
+  /// The y-values of the table values.
+  ///
+  /// ```dart
+  /// numsY: [4,2.25,1,0.25,0,0.25,1,2.25,4]
+  /// ```
+  final List<num>? numsY;
+
+  /// The fontsize for String in table value.
+  ///
+  /// ```dart
+  /// fontSize: 16.0
+  /// ```
+  final double fontSize;
+
+  TableValues(
+      {required this.size,
+      this.functionName,
+      this.f,
+      required this.numsX,
+      this.numsY,
+      required this.fontSize});
+
+  @override
+  Widget build(BuildContext context) {
+    List<Container> containers1 = [];
+    containers1.add(Container(
+      height: size.height * 0.5,
+      color: Colors.grey,
+      child: Center(
+          child: Text(
+        "x",
+        style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold),
+      )),
+    ));
+    numsX.forEach((element) {
+      containers1.add(Container(
+        height: size.height * 0.5,
+        child: Center(
+            child: Text(
+          element.toString(),
+          style: TextStyle(fontSize: fontSize),
+        )),
+      ));
+    });
+    TableRow tr1 = TableRow(
+      children: containers1,
+    );
+    List<Container> containers2 = [];
+    containers2.add(Container(
+      height: size.height * 0.5,
+      color: Colors.grey,
+      child: Center(
+          child: Text(
+        (functionName != null) ? functionName! : "f(x)",
+        style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold),
+        textAlign: TextAlign.center,
+      )),
+    ));
+    for (int i = 0; i < numsX.length; i++) {
+      containers2.add(Container(
+        color: (f!(numsX[i]).toString() == "NaN" ||
+                f!(numsX[i]).toString().contains("Infinity"))
+            ? Colors.redAccent
+            : Colors.white,
+        height: size.height * 0.5,
+        child: Center(
+            child: Text(
+          (numsY != null && numsY!.length > i)
+              ? numsY![i].toString()
+              : (f != null &&
+                      f!(numsX[i]).toString() != "NaN" &&
+                      !f!(numsX[i]).toString().contains("Infinity"))
+                  ? double.parse(f!(numsX[i]).toString()).toStringAsFixed(2)
+                  : "",
+          style: TextStyle(fontSize: fontSize),
+        )),
+      ));
+    }
+    TableRow tr2 = TableRow(
+      children: containers2,
+    );
+    return Container(
+      width: size.width,
+      height: size.height,
+      child: Stack(
+        children: [
+          Positioned(
+              left: size.width * 0.05,
+              right: size.width * 0.05,
+              child: Container(
+                width: size.width * 0.9,
+                height: size.height,
+                child: Table(
+                  border: TableBorder.all(),
+                  defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                  children: <TableRow>[tr1, tr2],
+                ),
+              ))
+        ],
+      ),
+    );
+  }
+}
+
+/// Classe interne associée à la classe DiscreteGraphic
+/// Permet de dessiner tous les points et lignes en surchargeant la classe paint
+/// Hérite de CustomPainter
+class _GraphCustomPainter5 extends CustomPainter {
+  _GraphCustomPainter5(
+      {required this.rowsLabels,
+      this.fontSize,
+      this.colorFont,
+      this.colorSigns,
+      this.strokeWidth,
+      this.colorLine});
+
+  List<List<String>> rowsLabels;
+  double? fontSize;
+  Color? colorFont;
+  Color? colorSigns;
+  double? strokeWidth;
+  Color? colorLine;
+
+  ///override paint : pour dessiner les axes, points, lignes suivant les valeurs contenues dans listNum
+  @override
+  void paint(Canvas canvas, Size size) {
+    ///Initialisation des variables
+    double fs = (fontSize != null) ? fontSize! : 14.0;
+    Color cf = (colorFont != null) ? colorFont! : Colors.black;
+    Color cs = (colorSigns != null) ? colorSigns! : Colors.red;
+    double sw = (strokeWidth != null) ? strokeWidth! : 2.0;
+    Color cl = (colorLine != null) ? colorLine! : Colors.black;
+
+    ///Draw the entire sequence of point as one line.
+    final pointMode = ui.PointMode.polygon;
+
+    ///Définition du pinceau pour les lignes
+    var paint1 = Paint()
+      ..color = cl
+      ..strokeWidth = sw
+      ..strokeCap = StrokeCap.round;
+
+    List<List<Offset>> offsets = [];
+
+    ///Création des différents points puis tracé des lignes verticales avec canvas.drawPoints
+    var stepX = (size.width - 20) / (rowsLabels[0].length - 1);
+    var stepY = size.height / (rowsLabels.length);
+    for (int i = 0; i <= rowsLabels.length; i++) {
+      List<Offset> offs = [];
+      for (int j = 0; j <= rowsLabels[0].length - 1; j++) {
+        offs.add(Offset(10 + j * stepX, stepY * i));
+      }
+      offsets.add(offs);
+    }
+    print(stepX);
+    print(stepY);
+    print(offsets.length);
+    print(offsets);
+    offsets.forEach((element) {
+      print(element);
+      canvas.drawPoints(pointMode, [element.first, element.last], paint1);
+    });
+    canvas.drawPoints(pointMode, [offsets[0][0], offsets.last[0]], paint1);
+    canvas.drawPoints(pointMode, [offsets[0][1], offsets.last[1]], paint1);
+    canvas.drawPoints(pointMode, [offsets[0].last, offsets.last.last], paint1);
+    for (int k = 1; k <= offsets[0].length - 1; k++) {
+      canvas.drawPoints(pointMode, [offsets[1][k], offsets.last[k]], paint1);
+    }
+
+    ///Ajout des labels première ligne
+    for (int i = 1; i <= offsets[0].length - 1; i++) {
+      var tp = _textpainter(cf, FontWeight.bold, fs, rowsLabels[0][i]);
+      tp.layout();
+      if (i == 1) {
+        tp.paint(
+            canvas,
+            Offset(
+                offsets[0][i].dx + 3, offsets[0][i].dy + stepY / 2 - fs / 2));
+      } else {
+        if (i == offsets[0].length - 1) {
+          tp.paint(
+              canvas,
+              Offset(offsets[0][i].dx - tp.width - 3,
+                  offsets[0][i].dy + stepY / 2 - fs / 2));
+        } else {
+          tp.paint(
+              canvas,
+              Offset(offsets[0][i].dx - tp.width / 2,
+                  offsets[0][i].dy + stepY / 2 - fs / 2));
+        }
+      }
+    }
+
+    ///Ajout des autres labels
+    var tp = _textpainter(cf, FontWeight.bold, fs, rowsLabels[0][0]);
+    tp.layout();
+    tp.paint(canvas, Offset(10 + stepX / 2 - tp.width / 2, stepY / 2 - tp.width / 2));
+    for (int i = 1; i < rowsLabels.length; i++) {
+      for (int j = 0; j < rowsLabels[i].length; j++) {
+        var tp = _textpainter((j > 0) ? cs : cf, FontWeight.bold, fs,
+            rowsLabels[i][j].split("/")[0]);
+        tp.layout();
+        tp.paint(
+            canvas,
+            Offset(10 + stepX * j + stepX / 2 - tp.width / 2,
+                stepY * i + stepY / 2 - fs / 2));
+
+        /// Placement des zéros
+        if ((rowsLabels[i][j].split("/").length > 1 &&
+                rowsLabels[i][j].split("/")[1] == "0")) {
+          print("TOTO");
+          var tp = _textpainter(cf, FontWeight.bold, fs*1.4,
+              "0");
+          tp.layout();
+          tp.paint(
+              canvas,
+              Offset(10 + stepX * (j+1)- tp.width / 2,
+                  stepY * i + stepY / 2 - tp.height/ 2));
+        }
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter old) {
+    return false;
+  }
+}
+
+class TableSign extends StatelessWidget {
+  /// The size of the container returned.
+  ///
+  /// ```dart
+  /// size: Size(MediaQuery.of(context).size.width,MediaQuery.of(context).size.height * 0.3)
+  /// ```
+  final Size size;
+
+  /// The String describing the function.
+  ///
+  /// ```dart
+  /// rowsLabels: 'x² - 3'
+  /// ```
+  final List<List<String>> rowsLabels;
+
+  /// The fontsize for String in table value.
+  ///
+  /// default value : 14.0
+  ///
+  /// ```dart
+  /// fontSize: 16.0
+  /// ```
+  final double? fontSize;
+
+  /// The color of font for labels in table sign.
+  ///
+  /// default value : Colors.black
+  ///
+  /// ```dart
+  /// colorFont: Colors.red
+  /// ```
+  final Color? colorFont;
+
+  /// The color of font for signs in table sign.
+  ///
+  /// default value : Colors.black
+  ///
+  /// ```dart
+  /// colorSigns: Colors.red
+  /// ```
+  final Color? colorSigns;
+
+  /// The width of the  lines in the table sign.
+  ///
+  /// default value : 2.0
+  ///
+  /// ```dart
+  /// strokeWidth: 3.0
+  /// ```
+  final double? strokeWidth;
+
+  /// The color of line of table sign.
+  ///
+  /// default value : Colors.black
+  ///
+  /// ```dart
+  /// colorLine: Colors.red
+  /// ```
+  final Color? colorLine;
+
+  TableSign(
+      {required this.size,
+      required this.rowsLabels,
+      this.fontSize,
+      this.colorFont,
+      this.colorSigns,
+      this.strokeWidth,
+      this.colorLine});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: size.width,
+      height: size.height,
+      child: Stack(
+        children: [
+          Positioned(
+              top: 0,
+              left: 0,
+              child: CustomPaint(
+                size: Size(size.width, size.height),
+                painter: _GraphCustomPainter5(
+                    rowsLabels: rowsLabels,
+                    fontSize: fontSize,
+                    colorFont: colorFont,
+                    strokeWidth: strokeWidth,
+                    colorLine: colorLine),
+              )),
         ],
       ),
     );

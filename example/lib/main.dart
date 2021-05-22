@@ -3,6 +3,8 @@ import 'package:example/discrete_graphic_page.dart';
 import 'package:example/ecc_ecd_graphic_page.dart';
 import 'package:example/function_graphic_page.dart';
 import 'package:example/parametrized_graphic_page.dart';
+import 'package:example/tablesigne_page.dart';
+import 'package:example/tablevalues_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -30,6 +32,10 @@ class MyApp extends StatelessWidget {
         "ecc_ecd_graphic_page": (BuildContext context) => EccEcdGraphicPage(),
         "parametrized_graphic_page": (BuildContext context) =>
             ParametrizedGraphicPage(),
+        "tablevalue_page": (BuildContext context) =>
+            TableValuePage(),
+        "tablesign_page": (BuildContext context) =>
+            TableSignPage(),
       },
       debugShowCheckedModeBanner: false,
     );
@@ -45,10 +51,10 @@ ElevatedButton myButton(BuildContext context, String title, String pushName) {
         primary: Colors.blueAccent,
       ),
       child: Padding(
-          padding: EdgeInsets.all(10.0),
+          padding: EdgeInsets.all(5.0),
           child: Text(
             title,
-            textScaleFactor: 2.0,
+            textScaleFactor: 1.8,
           )));
 }
 
@@ -75,6 +81,8 @@ class _MyHomePageState extends State<MyHomePage> {
           myButton(context, "DiscreteGraphic", "discrete_graphic_page"),
           myButton(context, "FunctionGraphic1", "function_graphic_page"),
           myButton(context, "FunctionGraphic2", "parametrized_graphic_page"),
+          myButton(context, "TableValue", "tablevalue_page"),
+          myButton(context, "TableSign", "tablesign_page"),
           myButton(context, "CircularGraphic", "circular_graphic_page"),
           myButton(context, "EccEcdGraphic", "ecc_ecd_graphic_page")
         ],
