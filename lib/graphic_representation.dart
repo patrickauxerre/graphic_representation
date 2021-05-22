@@ -1444,6 +1444,9 @@ class EccEcdGraphic extends StatelessWidget {
   }
 }
 
+/// Build a StatelessWidget : Container of defined size containing the Table value
+///
+/// Display a table value with calculated value if f is provided.
 class TableValues extends StatelessWidget {
   /// The size of the container returned.
   ///
@@ -1638,10 +1641,20 @@ class _GraphCustomPainter5 extends CustomPainter {
       canvas.drawPoints(pointMode, [element.first, element.last], paint1);
     });
     canvas.drawPoints(pointMode, [offsets[0][0], offsets.last[0]], paint1);
-    canvas.drawPoints(pointMode, [offsets[0][1], offsets.last[1]], paint1);
-    canvas.drawPoints(pointMode, [offsets[0].last, offsets.last.last], paint1);
-    for (int k = 1; k <= offsets[0].length - 1; k++) {
-      canvas.drawPoints(pointMode, [offsets[1][k], offsets.last[k]], paint1);
+    canvas.drawPoints(pointMode, [offsets[0][1], offsets[1][1]], paint1);
+    canvas.drawPoints(pointMode, [offsets[0].last, offsets[1].last], paint1);
+    for (int k = 1; k <= offsets.length - 1; k++) {
+      for (int l = 0; l <= offsets[0].length - 1; l++) {
+        if (k > 1 &&
+            l > 0 &&
+            !((rowsLabels[k - 1][l - 1].split("/").length > 1 &&
+                    rowsLabels[k - 1][l - 1].split("/")[1] == "NAN") ||
+                (rowsLabels[k - 1][l - 1].split("/").length > 2 &&
+                    rowsLabels[k - 1][l - 1].split("/")[2] == "NAN"))) {
+          canvas.drawPoints(
+              pointMode, [offsets[k - 1][l], offsets[k][l]], paint1);
+        }
+      }
     }
 
     ///Ajout des labels première ligne
@@ -1651,19 +1664,19 @@ class _GraphCustomPainter5 extends CustomPainter {
       if (i == 1) {
         tp.paint(
             canvas,
-            Offset(
-                offsets[0][i].dx + 3, offsets[0][i].dy + stepY / 2 - fs / 2));
+            Offset(offsets[0][i].dx + 3,
+                offsets[0][i].dy + stepY / 2 - tp.height / 2));
       } else {
         if (i == offsets[0].length - 1) {
           tp.paint(
               canvas,
               Offset(offsets[0][i].dx - tp.width - 3,
-                  offsets[0][i].dy + stepY / 2 - fs / 2));
+                  offsets[0][i].dy + stepY / 2 - tp.height / 2));
         } else {
           tp.paint(
               canvas,
               Offset(offsets[0][i].dx - tp.width / 2,
-                  offsets[0][i].dy + stepY / 2 - fs / 2));
+                  offsets[0][i].dy + stepY / 2 - tp.height / 2));
         }
       }
     }
@@ -1671,7 +1684,8 @@ class _GraphCustomPainter5 extends CustomPainter {
     ///Ajout des autres labels
     var tp = _textpainter(cf, FontWeight.bold, fs, rowsLabels[0][0]);
     tp.layout();
-    tp.paint(canvas, Offset(10 + stepX / 2 - tp.width / 2, stepY / 2 - tp.width / 2));
+    tp.paint(canvas,
+        Offset(10 + stepX / 2 - tp.width / 2, stepY / 2 - tp.height / 2));
     for (int i = 1; i < rowsLabels.length; i++) {
       for (int j = 0; j < rowsLabels[i].length; j++) {
         var tp = _textpainter((j > 0) ? cs : cf, FontWeight.bold, fs,
@@ -1680,19 +1694,35 @@ class _GraphCustomPainter5 extends CustomPainter {
         tp.paint(
             canvas,
             Offset(10 + stepX * j + stepX / 2 - tp.width / 2,
-                stepY * i + stepY / 2 - fs / 2));
+                stepY * i + stepY / 2 - tp.height / 2));
 
         /// Placement des zéros
         if ((rowsLabels[i][j].split("/").length > 1 &&
-                rowsLabels[i][j].split("/")[1] == "0")) {
-          print("TOTO");
-          var tp = _textpainter(cf, FontWeight.bold, fs*1.4,
-              "0");
+                rowsLabels[i][j].split("/")[1] == "0") ||
+            (rowsLabels[i][j].split("/").length > 2 &&
+                rowsLabels[i][j].split("/")[2] == "0")) {
+          var tp = _textpainter(cf, FontWeight.normal, fs * 1.4, "0");
           tp.layout();
           tp.paint(
               canvas,
-              Offset(10 + stepX * (j+1)- tp.width / 2,
-                  stepY * i + stepY / 2 - tp.height/ 2));
+              Offset(10 + stepX * (j + 1) - tp.width / 2,
+                  stepY * i + stepY / 2 - tp.height / 2));
+        }
+
+        /// Ajout double-barres
+        if ((rowsLabels[i][j].split("/").length > 1 &&
+                rowsLabels[i][j].split("/")[1] == "NAN") ||
+            (rowsLabels[i][j].split("/").length > 2 &&
+                rowsLabels[i][j].split("/")[2] == "NAN")) {
+          print("TOTO");
+          var off1 = Offset(offsets[i][j + 1].dx + sw, offsets[i][j + 1].dy);
+          var off2 =
+              Offset(offsets[i + 1][j + 1].dx + sw, offsets[i + 1][j + 1].dy);
+          var off3 = Offset(offsets[i][j + 1].dx - sw, offsets[i][j + 1].dy);
+          var off4 =
+              Offset(offsets[i + 1][j + 1].dx - sw, offsets[i + 1][j + 1].dy);
+          canvas.drawPoints(pointMode, [off1, off2], paint1);
+          canvas.drawPoints(pointMode, [off3, off4], paint1);
         }
       }
     }
@@ -1704,6 +1734,9 @@ class _GraphCustomPainter5 extends CustomPainter {
   }
 }
 
+/// Build a StatelessWidget : Container of defined size containing the Table sign
+///
+/// Display a table sign.
 class TableSign extends StatelessWidget {
   /// The size of the container returned.
   ///
@@ -1714,8 +1747,16 @@ class TableSign extends StatelessWidget {
 
   /// The String describing the function.
   ///
+  /// Add /0 in String to display a O after sign and /NAN to display a double bar
+  ///
   /// ```dart
-  /// rowsLabels: 'x² - 3'
+  /// rowsLabels: rowsLabels: [
+  ///             ["x", "-∞", "-1", "0,5", "1", "+∞"],
+  ///             ["x - 0,5", "-", "-/0", "+", "+"],
+  ///             ["x - 1", "-", "-", "-/0", "+"],
+  ///             ["x + 1", "-/0", "+", "+", "+"],
+  ///             ["f(x)", "-/NAN", "+/0", "-/NAN", "+"],
+  ///           ]
   /// ```
   final List<List<String>> rowsLabels;
 

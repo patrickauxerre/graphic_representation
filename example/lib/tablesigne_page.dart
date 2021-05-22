@@ -16,6 +16,14 @@ class TableSignPage extends StatelessWidget {
                   TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
               textScaleFactor: 1.5,
             )),
+        Padding(
+            padding: EdgeInsets.only(top: 10.0, bottom: 20.0),
+            child: Text(
+              "f(x) = (x - 0,5) / (x² - 1)",
+              style:
+                  TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+              textScaleFactor: 1.5,
+            )),
         TableSign(
           size: Size(MediaQuery.of(context).size.width,
               MediaQuery.of(context).size.height * 0.3),
@@ -24,7 +32,7 @@ class TableSignPage extends StatelessWidget {
             ["x - 0,5", "-", "-/0", "+", "+"],
             ["x - 1", "-", "-", "-/0", "+"],
             ["x + 1", "-/0", "+", "+", "+"],
-            ["f(x)", "-/0/NAN", "+/0", "-/0/NAN", "+"],
+            ["f(x)", "-/NAN", "+/0", "-/NAN", "+"],
           ],
           fontSize: 18.0,
         )

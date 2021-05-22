@@ -1,6 +1,10 @@
-## [1.0.5] - 2021-05-20
+## [1.0.6] - 2021-05-22
 
-* modification README.
+* Add class TableSign.
+
+## [1.0.5] - 2021-05-21
+
+* Add class TableValue.
 
 ## [1.0.4] - 2021-05-20
 

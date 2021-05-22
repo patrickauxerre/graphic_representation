@@ -12,7 +12,7 @@ In the dependencies: section of your `pubspec.yaml, add the following line:
 
 ```yaml
 dependencies:
-    graphic_representation: ^1.0.5
+    graphic_representation: ^1.0.6
 ```
 
 ## Usage
@@ -142,6 +142,38 @@ EccEcdGraphic(
           strokeLine: 2.0,
           showMedian: true,
           colorMedian: Colors.black,
+        )
+```
+
+### Class TableValue
+Build a StatelessWidget : Container of defined size containing the Table value.  
+Display a table value with calculated value if f is provided.  
+```dart
+TableValues(
+          size: Size(MediaQuery.of(context).size.width,
+              MediaQuery.of(context).size.height * 0.2),
+          functionName: 'x² + 1/x',
+          f: (x) => x*x + 1/x,
+          numsX: [-2, -1, 0, 1, 2],
+          fontSize: 12,
+        )
+```
+
+### Class TableSign
+Build a StatelessWidget : Container of defined size containing the Table sign  
+Display a table sign.  
+```dart
+TableSign(
+          size: Size(MediaQuery.of(context).size.width,
+              MediaQuery.of(context).size.height * 0.3),
+          rowsLabels: [
+            ["x", "-∞", "-1", "0,5", "1", "+∞"],
+            ["x - 0,5", "-", "-/0", "+", "+"],
+            ["x - 1", "-", "-", "-/0", "+"],
+            ["x + 1", "-/0", "+", "+", "+"],
+            ["f(x)", "-/NAN", "+/0", "-/NAN", "+"],
+          ],
+          fontSize: 18.0,
         )
 ```
 
