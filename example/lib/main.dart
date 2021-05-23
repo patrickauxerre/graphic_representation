@@ -5,6 +5,7 @@ import 'package:example/function_graphic_page.dart';
 import 'package:example/parametrized_graphic_page.dart';
 import 'package:example/tablesigne_page.dart';
 import 'package:example/tablevalues_page.dart';
+import 'package:example/tablevariation_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -36,6 +37,8 @@ class MyApp extends StatelessWidget {
             TableValuePage(),
         "tablesign_page": (BuildContext context) =>
             TableSignPage(),
+        "tablevariation_page": (BuildContext context) =>
+            TableVariationPage(),
       },
       debugShowCheckedModeBanner: false,
     );
@@ -83,6 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
           myButton(context, "FunctionGraphic2", "parametrized_graphic_page"),
           myButton(context, "TableValue", "tablevalue_page"),
           myButton(context, "TableSign", "tablesign_page"),
+          myButton(context, "TableVariation", "tablevariation_page"),
           myButton(context, "CircularGraphic", "circular_graphic_page"),
           myButton(context, "EccEcdGraphic", "ecc_ecd_graphic_page")
         ],
