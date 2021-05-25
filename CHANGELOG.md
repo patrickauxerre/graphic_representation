@@ -1,4 +1,8 @@
-## [1.0.7] - 2021-05-22
+## [1.1.0] - 2021-05-25
+
+* modification README.
+
+## [1.0.7] - 2021-05-25
 
 * Add class TableVariation.
 
