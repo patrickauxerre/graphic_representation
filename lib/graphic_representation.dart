@@ -1,8 +1,11 @@
 library graphic_representation;
 
+import 'dart:async';
 import 'dart:math';
+import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 num _sumPositiveElement(List<num>? l) {
   num s = 0;
@@ -49,31 +52,51 @@ class _Coord {
   _Coord(this.x, this.y);
 }
 
-TextPainter _textpainter(Color colorFont, FontWeight fw, double fontSize,
-    String text) {
+TextPainter _textpainter(
+    Color colorFont, FontWeight fw, double fontSize, String text) {
   TextSpan span = TextSpan(
       style: TextStyle(color: colorFont, fontWeight: fw, fontSize: fontSize),
       text: text);
-  TextPainter tp = TextPainter(text: span, textDirection: TextDirection.ltr);
+  TextPainter tp = TextPainter(
+      text: span,
+      textDirection: TextDirection.ltr,
+      textAlign: TextAlign.center);
   return tp;
+}
+
+AssetBundle getAssetBundle() {
+  if (rootBundle != null) {
+    return rootBundle;
+  } else {
+    return new NetworkAssetBundle(new Uri.directory(Uri.base.origin));
+  }
+}
+
+class ImageLoader {
+  static Future<ByteData> load(String url) async {
+    AssetBundle bundle = getAssetBundle();
+    var resource = bundle.load(url);
+    return resource;
+  }
 }
 
 /// Classe interne associée à la classe DiscreteGraphic
 /// Permet de dessiner tous les points et lignes en surchargeant la classe paint
 /// Hérite de CustomPainter
 class _GraphCustomPainter1 extends CustomPainter {
-  _GraphCustomPainter1({required this.listNum,
-    required this.colorAxes,
-    required this.nbGradX,
-    required this.nbGradY,
-    required this.minY,
-    required this.maxY,
-    this.colorLine,
-    this.strokeLine,
-    this.colorPoint,
-    this.radiusPoint,
-    this.colorBox,
-    this.boxWidth});
+  _GraphCustomPainter1(
+      {required this.listNum,
+      required this.colorAxes,
+      required this.nbGradX,
+      required this.nbGradY,
+      required this.minY,
+      required this.maxY,
+      this.colorLine,
+      this.strokeLine,
+      this.colorPoint,
+      this.radiusPoint,
+      this.colorBox,
+      this.boxWidth});
 
   List<num> listNum;
   Color colorAxes;
@@ -176,8 +199,7 @@ class _GraphCustomPainter1 extends CustomPainter {
       if (colorPoint != null &&
           offSets[i].dy >= 0 &&
           offSets[i].dy <= size.height) {
-        var paint2 = Paint()
-          ..color = colorPoint!;
+        var paint2 = Paint()..color = colorPoint!;
         canvas.drawCircle(offSets[i], rp, paint2);
       }
       if (colorBox != null) {
@@ -312,19 +334,20 @@ class DiscreteGraphic extends StatelessWidget {
   /// ```
   final List<String>? listGradX;
 
-  DiscreteGraphic({required this.size,
-    required this.nums,
-    required this.colorAxes,
-    required this.nbGradY,
-    this.minY,
-    this.maxY,
-    this.colorLine,
-    this.strokeLine,
-    this.colorPoint,
-    this.radiusPoint,
-    this.colorBox,
-    this.boxWidth,
-    this.listGradX});
+  DiscreteGraphic(
+      {required this.size,
+      required this.nums,
+      required this.colorAxes,
+      required this.nbGradY,
+      this.minY,
+      this.maxY,
+      this.colorLine,
+      this.strokeLine,
+      this.colorPoint,
+      this.radiusPoint,
+      this.colorBox,
+      this.boxWidth,
+      this.listGradX});
 
   double _max(List<num> nums) {
     num n = nums[0];
@@ -374,8 +397,8 @@ class DiscreteGraphic extends StatelessWidget {
             (this.listGradX == null)
                 ? ""
                 : i < listGradX!.length
-                ? listGradX![i]
-                : "",
+                    ? listGradX![i]
+                    : "",
             style: TextStyle(color: colorAxes),
             textScaleFactor: 0.8,
           ),
@@ -392,21 +415,21 @@ class DiscreteGraphic extends StatelessWidget {
               left: 50,
               child: (nums != null)
                   ? CustomPaint(
-                size: Size(size.width - 100, size.height - 40),
-                painter: _GraphCustomPainter1(
-                    listNum: nums!,
-                    colorAxes: colorAxes,
-                    colorLine: colorLine,
-                    strokeLine: strokeLine,
-                    colorPoint: colorPoint,
-                    radiusPoint: radiusPoint,
-                    colorBox: colorBox,
-                    boxWidth: boxWidth,
-                    nbGradX: (nums != null) ? nums!.length : 1,
-                    nbGradY: nbGradY,
-                    minY: min!,
-                    maxY: max!),
-              )
+                      size: Size(size.width - 100, size.height - 40),
+                      painter: _GraphCustomPainter1(
+                          listNum: nums!,
+                          colorAxes: colorAxes,
+                          colorLine: colorLine,
+                          strokeLine: strokeLine,
+                          colorPoint: colorPoint,
+                          radiusPoint: radiusPoint,
+                          colorBox: colorBox,
+                          boxWidth: boxWidth,
+                          nbGradX: (nums != null) ? nums!.length : 1,
+                          nbGradY: nbGradY,
+                          minY: min!,
+                          maxY: max!),
+                    )
                   : Container()),
           Stack(children: pos)
         ],
@@ -419,21 +442,22 @@ class DiscreteGraphic extends StatelessWidget {
 /// Permet de dessiner tous les points et lignes en surchargeant la classe paint
 /// Hérite de CustomPainter
 class _GraphCustomPainter2 extends CustomPainter {
-  _GraphCustomPainter2({required this.functions,
-    required this.functionsXt,
-    required this.functionsYt,
-    required this.nbGradX,
-    required this.nbGradY,
-    required this.minX,
-    required this.maxX,
-    required this.minY,
-    required this.maxY,
-    required this.minT,
-    required this.maxT,
-    this.colorAxes,
-    this.colors,
-    this.colorsParam,
-    this.strokeLine});
+  _GraphCustomPainter2(
+      {required this.functions,
+      required this.functionsXt,
+      required this.functionsYt,
+      required this.nbGradX,
+      required this.nbGradY,
+      required this.minX,
+      required this.maxX,
+      required this.minY,
+      required this.maxY,
+      required this.minT,
+      required this.maxT,
+      this.colorAxes,
+      this.colors,
+      this.colorsParam,
+      this.strokeLine});
 
   List<Function> functions;
   List<Function> functionsXt;
@@ -936,14 +960,8 @@ class CircularGraphic extends StatelessWidget {
   Widget build(BuildContext context) {
     bool showp = (showPourcentage == null) ? false : showPourcentage!;
     Color colInfo = (colorsInfo == null) ? Colors.black : colorsInfo!;
-    double w = MediaQuery
-        .of(context)
-        .size
-        .width;
-    double h = MediaQuery
-        .of(context)
-        .size
-        .width;
+    double w = MediaQuery.of(context).size.width;
+    double h = MediaQuery.of(context).size.width;
     List<Positioned> pos = [];
     var s = _sumPositiveElement(nums);
     double beta = 0;
@@ -1016,19 +1034,10 @@ class CircularGraphic extends StatelessWidget {
         children: [
           Positioned(
               top: 0,
-              left: MediaQuery
-                  .of(context)
-                  .size
-                  .width * 0.2,
+              left: MediaQuery.of(context).size.width * 0.2,
               child: CustomPaint(
-                size: Size(MediaQuery
-                    .of(context)
-                    .size
-                    .width,
-                    MediaQuery
-                        .of(context)
-                        .size
-                        .width),
+                size: Size(MediaQuery.of(context).size.width,
+                    MediaQuery.of(context).size.width),
                 painter: _GraphCustomPainter3(
                     nums: nums, titles: titles, colors: colors),
               )),
@@ -1043,18 +1052,19 @@ class CircularGraphic extends StatelessWidget {
 /// Permet de dessiner tous les points et lignes en surchargeant la classe paint
 /// Hérite de CustomPainter
 class _GraphCustomPainter4 extends CustomPainter {
-  _GraphCustomPainter4({required this.numsX,
-    required this.numsY,
-    this.nbGradX,
-    this.nbGradY,
-    this.colorAxes,
-    this.showECC,
-    this.showECD,
-    this.colorECC,
-    this.colorECD,
-    this.strokeLine,
-    this.showMedian,
-    this.colorMedian});
+  _GraphCustomPainter4(
+      {required this.numsX,
+      required this.numsY,
+      this.nbGradX,
+      this.nbGradY,
+      this.colorAxes,
+      this.showECC,
+      this.showECD,
+      this.colorECC,
+      this.colorECD,
+      this.strokeLine,
+      this.showMedian,
+      this.colorMedian});
 
   final List<num> numsX;
   final List<num> numsY;
@@ -1197,8 +1207,7 @@ class _GraphCustomPainter4 extends CustomPainter {
       /// Tracé des points ECC
       if (showEcc) {
         for (int i = 0; i <= offSets.length - 1; i++) {
-          var paint2 = Paint()
-            ..color = colECC!;
+          var paint2 = Paint()..color = colECC!;
           canvas.drawCircle(offSets[i], 4.0, paint2);
         }
       }
@@ -1206,8 +1215,7 @@ class _GraphCustomPainter4 extends CustomPainter {
       /// Tracé des points ECD
       if (showEcd) {
         for (int i = 0; i <= offSets2.length - 1; i++) {
-          var paint2 = Paint()
-            ..color = colECD!;
+          var paint2 = Paint()..color = colECD!;
           canvas.drawCircle(offSets2[i], 4.0, paint2);
         }
       }
@@ -1236,8 +1244,7 @@ class _GraphCustomPainter4 extends CustomPainter {
         print(med);
         var offSetMedian = Offset(
             ((med - _min(numsX)) / deltaX) * size.width, 0.5 * size.height);
-        var paint = Paint()
-          ..color = colMedian!;
+        var paint = Paint()..color = colMedian!;
         canvas.drawCircle(offSetMedian, 4.0, paint);
         var tp = _textpainter(
             colMedian, FontWeight.bold, 20, "m = " + med.toStringAsFixed(1));
@@ -1379,20 +1386,21 @@ class EccEcdGraphic extends StatelessWidget {
   /// ```
   final Color? colorMedian;
 
-  EccEcdGraphic({required this.size,
-    required this.numsX,
-    required this.numsY,
-    this.nbGradX,
-    this.nbGradY,
-    this.colorAxes,
-    this.showECC,
-    this.showECD,
-    this.colorECC,
-    this.colorECD,
-    this.strokeLine,
-    this.pourcentageMode,
-    this.showMedian,
-    this.colorMedian});
+  EccEcdGraphic(
+      {required this.size,
+      required this.numsX,
+      required this.numsY,
+      this.nbGradX,
+      this.nbGradY,
+      this.colorAxes,
+      this.showECC,
+      this.showECD,
+      this.colorECC,
+      this.colorECD,
+      this.strokeLine,
+      this.pourcentageMode,
+      this.showMedian,
+      this.colorMedian});
 
   @override
   Widget build(BuildContext context) {
@@ -1506,12 +1514,13 @@ class TableValues extends StatelessWidget {
   /// ```
   final double fontSize;
 
-  TableValues({required this.size,
-    this.functionName,
-    this.f,
-    required this.numsX,
-    this.numsY,
-    required this.fontSize});
+  TableValues(
+      {required this.size,
+      this.functionName,
+      this.f,
+      required this.numsX,
+      this.numsY,
+      required this.fontSize});
 
   @override
   Widget build(BuildContext context) {
@@ -1521,18 +1530,18 @@ class TableValues extends StatelessWidget {
       color: Colors.grey,
       child: Center(
           child: Text(
-            "x",
-            style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold),
-          )),
+        "x",
+        style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold),
+      )),
     ));
     numsX.forEach((element) {
       containers1.add(Container(
         height: size.height * 0.5,
         child: Center(
             child: Text(
-              element.toString(),
-              style: TextStyle(fontSize: fontSize),
-            )),
+          element.toString(),
+          style: TextStyle(fontSize: fontSize),
+        )),
       ));
     });
     TableRow tr1 = TableRow(
@@ -1544,29 +1553,29 @@ class TableValues extends StatelessWidget {
       color: Colors.grey,
       child: Center(
           child: Text(
-            (functionName != null) ? functionName! : "f(x)",
-            style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold),
-            textAlign: TextAlign.center,
-          )),
+        (functionName != null) ? functionName! : "f(x)",
+        style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold),
+        textAlign: TextAlign.center,
+      )),
     ));
     for (int i = 0; i < numsX.length; i++) {
       containers2.add(Container(
         color: (f!(numsX[i]).toString() == "NaN" ||
-            f!(numsX[i]).toString().contains("Infinity"))
+                f!(numsX[i]).toString().contains("Infinity"))
             ? Colors.redAccent
             : Colors.white,
         height: size.height * 0.5,
         child: Center(
             child: Text(
-              (numsY != null && numsY!.length > i)
-                  ? numsY![i].toString()
-                  : (f != null &&
-                  f!(numsX[i]).toString() != "NaN" &&
-                  !f!(numsX[i]).toString().contains("Infinity"))
+          (numsY != null && numsY!.length > i)
+              ? numsY![i].toString()
+              : (f != null &&
+                      f!(numsX[i]).toString() != "NaN" &&
+                      !f!(numsX[i]).toString().contains("Infinity"))
                   ? double.parse(f!(numsX[i]).toString()).toStringAsFixed(2)
                   : "",
-              style: TextStyle(fontSize: fontSize),
-            )),
+          style: TextStyle(fontSize: fontSize),
+        )),
       ));
     }
     TableRow tr2 = TableRow(
@@ -1599,12 +1608,13 @@ class TableValues extends StatelessWidget {
 /// Permet de dessiner tous les points et lignes en surchargeant la classe paint
 /// Hérite de CustomPainter
 class _GraphCustomPainter5 extends CustomPainter {
-  _GraphCustomPainter5({required this.rowsLabels,
-    this.fontSize,
-    this.colorFont,
-    this.colorSigns,
-    this.strokeWidth,
-    this.colorLine});
+  _GraphCustomPainter5(
+      {required this.rowsLabels,
+      this.fontSize,
+      this.colorFont,
+      this.colorSigns,
+      this.strokeWidth,
+      this.colorLine});
 
   List<List<String>> rowsLabels;
   double? fontSize;
@@ -1659,13 +1669,9 @@ class _GraphCustomPainter5 extends CustomPainter {
       for (int l = 0; l <= offsets[0].length - 1; l++) {
         if (k > 1 &&
             l > 0 &&
-            !((rowsLabels[k - 1][l - 1]
-                .split("/")
-                .length > 1 &&
-                rowsLabels[k - 1][l - 1].split("/")[1] == "NAN") ||
-                (rowsLabels[k - 1][l - 1]
-                    .split("/")
-                    .length > 2 &&
+            !((rowsLabels[k - 1][l - 1].split("/").length > 1 &&
+                    rowsLabels[k - 1][l - 1].split("/")[1] == "NAN") ||
+                (rowsLabels[k - 1][l - 1].split("/").length > 2 &&
                     rowsLabels[k - 1][l - 1].split("/")[2] == "NAN"))) {
           canvas.drawPoints(
               pointMode, [offsets[k - 1][l], offsets[k][l]], paint1);
@@ -1713,13 +1719,9 @@ class _GraphCustomPainter5 extends CustomPainter {
                 stepY * i + stepY / 2 - tp.height / 2));
 
         /// Placement des zéros
-        if ((rowsLabels[i][j]
-            .split("/")
-            .length > 1 &&
-            rowsLabels[i][j].split("/")[1] == "0") ||
-            (rowsLabels[i][j]
-                .split("/")
-                .length > 2 &&
+        if ((rowsLabels[i][j].split("/").length > 1 &&
+                rowsLabels[i][j].split("/")[1] == "0") ||
+            (rowsLabels[i][j].split("/").length > 2 &&
                 rowsLabels[i][j].split("/")[2] == "0")) {
           var tp = _textpainter(cf, FontWeight.normal, fs * 1.4, "0");
           tp.layout();
@@ -1730,21 +1732,17 @@ class _GraphCustomPainter5 extends CustomPainter {
         }
 
         /// Ajout double-barres
-        if ((rowsLabels[i][j]
-            .split("/")
-            .length > 1 &&
-            rowsLabels[i][j].split("/")[1] == "NAN") ||
-            (rowsLabels[i][j]
-                .split("/")
-                .length > 2 &&
+        if ((rowsLabels[i][j].split("/").length > 1 &&
+                rowsLabels[i][j].split("/")[1] == "NAN") ||
+            (rowsLabels[i][j].split("/").length > 2 &&
                 rowsLabels[i][j].split("/")[2] == "NAN")) {
           print("TOTO");
           var off1 = Offset(offsets[i][j + 1].dx + sw, offsets[i][j + 1].dy);
           var off2 =
-          Offset(offsets[i + 1][j + 1].dx + sw, offsets[i + 1][j + 1].dy);
+              Offset(offsets[i + 1][j + 1].dx + sw, offsets[i + 1][j + 1].dy);
           var off3 = Offset(offsets[i][j + 1].dx - sw, offsets[i][j + 1].dy);
           var off4 =
-          Offset(offsets[i + 1][j + 1].dx - sw, offsets[i + 1][j + 1].dy);
+              Offset(offsets[i + 1][j + 1].dx - sw, offsets[i + 1][j + 1].dy);
           canvas.drawPoints(pointMode, [off1, off2], paint1);
           canvas.drawPoints(pointMode, [off3, off4], paint1);
         }
@@ -1829,13 +1827,14 @@ class TableSign extends StatelessWidget {
   /// ```
   final Color? colorLine;
 
-  TableSign({required this.size,
-    required this.rowsLabels,
-    this.fontSize,
-    this.colorFont,
-    this.colorSigns,
-    this.strokeWidth,
-    this.colorLine});
+  TableSign(
+      {required this.size,
+      required this.rowsLabels,
+      this.fontSize,
+      this.colorFont,
+      this.colorSigns,
+      this.strokeWidth,
+      this.colorLine});
 
   @override
   Widget build(BuildContext context) {
@@ -1866,12 +1865,13 @@ class TableSign extends StatelessWidget {
 /// Permet de dessiner tous les points et lignes en surchargeant la classe paint
 /// Hérite de CustomPainter
 class _GraphCustomPainter6 extends CustomPainter {
-  _GraphCustomPainter6({required this.rowsLabels,
-    this.fontSize,
-    this.colorFont,
-    this.colorSigns,
-    this.strokeWidth,
-    this.colorLine});
+  _GraphCustomPainter6(
+      {required this.rowsLabels,
+      this.fontSize,
+      this.colorFont,
+      this.colorSigns,
+      this.strokeWidth,
+      this.colorLine});
 
   List<List<String>> rowsLabels;
   double? fontSize;
@@ -1916,13 +1916,6 @@ class _GraphCustomPainter6 extends CustomPainter {
       offsets.add(offs);
     }
 
-    ///Placement des points -> A supprimer
-    offsets.forEach((element) {
-      element.forEach((off) {
-        canvas.drawCircle(off, 4.0, paint1);
-      });
-    });
-
     ///Tracé des lignes
     for (int i = 0; i <= offsets.length - 1; i++) {
       canvas.drawPoints(pointMode, [offsets[i].first, offsets[i].last], paint1);
@@ -1934,14 +1927,20 @@ class _GraphCustomPainter6 extends CustomPainter {
     if (rowsLabels.length == 3) {
       for (int i = 2; i <= offsets[0].length - 2; i++) {
         if (rowsLabels[1][i - 1].contains("NAN")) {
-          canvas.drawPoints(pointMode, [
-            Offset(offsets[1][i].dx - sw, offsets[1][i].dy),
-            Offset(offsets[2][i].dx - sw, offsets[2][i].dy)
-          ], paint1);
-          canvas.drawPoints(pointMode, [
-            Offset(offsets[1][i].dx + sw, offsets[1][i].dy),
-            Offset(offsets[2][i].dx + sw, offsets[2][i].dy)
-          ], paint1);
+          canvas.drawPoints(
+              pointMode,
+              [
+                Offset(offsets[1][i].dx - sw, offsets[1][i].dy),
+                Offset(offsets[2][i].dx - sw, offsets[2][i].dy)
+              ],
+              paint1);
+          canvas.drawPoints(
+              pointMode,
+              [
+                Offset(offsets[1][i].dx + sw, offsets[1][i].dy),
+                Offset(offsets[2][i].dx + sw, offsets[2][i].dy)
+              ],
+              paint1);
         } else {
           canvas.drawPoints(pointMode, [offsets[1][i], offsets[2][i]], paint1);
         }
@@ -1950,15 +1949,50 @@ class _GraphCustomPainter6 extends CustomPainter {
     var index = 0;
     rowsLabels.last.forEach((element) {
       if (element.contains("NAN")) {
-        canvas.drawPoints(pointMode, [
-          Offset(offsets[offsets.length-2][index].dx - sw, offsets[offsets.length-2][index].dy),
-          Offset(offsets.last[index].dx - sw, offsets.last[index].dy)
-        ], paint1);
-        canvas.drawPoints(pointMode, [
-          Offset(offsets[offsets.length-2][index].dx + sw, offsets[offsets.length-2][index].dy),
-          Offset(offsets.last[index].dx + sw, offsets.last[index].dy)
-        ], paint1);
+        if (index > 1 && index < rowsLabels.last.length - 1) {
+          canvas.drawPoints(
+              pointMode,
+              [
+                Offset(offsets[offsets.length - 2][index].dx - sw,
+                    offsets[offsets.length - 2][index].dy),
+                Offset(offsets.last[index].dx - sw, offsets.last[index].dy)
+              ],
+              paint1);
+          canvas.drawPoints(
+              pointMode,
+              [
+                Offset(offsets[offsets.length - 2][index].dx + sw,
+                    offsets[offsets.length - 2][index].dy),
+                Offset(offsets.last[index].dx + sw, offsets.last[index].dy)
+              ],
+              paint1);
+        } else {
+          if (index == 1) {
+            canvas.drawPoints(
+                pointMode,
+                [
+                  Offset(offsets[offsets.length - 2][index].dx + 2 * sw,
+                      offsets[offsets.length - 2][index].dy),
+                  Offset(
+                      offsets.last[index].dx + 2 * sw, offsets.last[index].dy)
+                ],
+                paint1);
+          } else {
+            if (index == rowsLabels.last.length - 1) {
+              canvas.drawPoints(
+                  pointMode,
+                  [
+                    Offset(offsets[offsets.length - 2][index].dx - 2 * sw,
+                        offsets[offsets.length - 2][index].dy),
+                    Offset(
+                        offsets.last[index].dx - 2 * sw, offsets.last[index].dy)
+                  ],
+                  paint1);
+            }
+          }
+        }
       }
+
       index++;
     });
 
@@ -1995,62 +2029,157 @@ class _GraphCustomPainter6 extends CustomPainter {
     tp.layout();
     if (rowsLabels.length == 2) {
       tp.paint(canvas,
-          Offset(10 + stepX / 2 - tp.width / 2, 2.5*stepY - tp.height / 2));
+          Offset(10 + stepX / 2 - tp.width / 2, 2.5 * stepY - tp.height / 2));
     } else {
       tp.paint(canvas,
-          Offset(10 + stepX / 2 - tp.width / 2, 3*stepY - tp.height / 2));
+          Offset(10 + stepX / 2 - tp.width / 2, 3 * stepY - tp.height / 2));
       tp = _textpainter(cf, FontWeight.bold, fs, rowsLabels[1][0]);
       tp.layout();
       tp.paint(canvas,
-          Offset(10 + stepX / 2 - tp.width / 2, 1.5*stepY - tp.height / 2));
+          Offset(10 + stepX / 2 - tp.width / 2, 1.5 * stepY - tp.height / 2));
     }
     if (rowsLabels.length > 2) {
-        for (int j = 0; j < rowsLabels[1].length; j++) {
-          var tp = _textpainter((j > 0) ? cs : cf, FontWeight.bold, fs,
-              rowsLabels[1][j].split("/")[0]);
+      for (int j = 0; j < rowsLabels[1].length; j++) {
+        var tp = _textpainter((j > 0) ? cs : cf, FontWeight.bold, fs,
+            rowsLabels[1][j].split("/")[0]);
+        tp.layout();
+        tp.paint(
+            canvas,
+            Offset(10 + stepX * j + stepX / 2 - tp.width / 2,
+                stepY * 1.5 - tp.height / 2));
+
+        /// Placement des zéros
+        if ((rowsLabels[1][j].split("/").length > 1 &&
+                rowsLabels[1][j].split("/")[1] == "0") ||
+            (rowsLabels[1][j].split("/").length > 2 &&
+                rowsLabels[1][j].split("/")[2] == "0")) {
+          var tp = _textpainter(cf, FontWeight.normal, fs * 1.4, "0");
           tp.layout();
           tp.paint(
               canvas,
-              Offset(10 + stepX * j + stepX / 2 - tp.width / 2,
+              Offset(10 + stepX * (j + 1) - tp.width / 2,
                   stepY * 1.5 - tp.height / 2));
-
-          /// Placement des zéros
-          if ((rowsLabels[1][j]
-              .split("/")
-              .length > 1 &&
-              rowsLabels[1][j].split("/")[1] == "0") ||
-              (rowsLabels[1][j]
-                  .split("/")
-                  .length > 2 &&
-                  rowsLabels[1][j].split("/")[2] == "0")) {
-            var tp = _textpainter(cf, FontWeight.normal, fs * 1.4, "0");
-            tp.layout();
-            tp.paint(
-                canvas,
-                Offset(10 + stepX * (j + 1) - tp.width / 2,
-                    stepY * 1.5 - tp.height / 2));
-          }
-
-          /// Ajout double-barres
-          if ((rowsLabels[1][j]
-              .split("/")
-              .length > 1 &&
-              rowsLabels[1][j].split("/")[1] == "NAN") ||
-              (rowsLabels[1][j]
-                  .split("/")
-                  .length > 2 &&
-                  rowsLabels[1][j].split("/")[2] == "NAN")) {
-            print("TOTO");
-            var off1 = Offset(offsets[1][j + 1].dx + sw, offsets[1][j + 1].dy);
-            var off2 =
-            Offset(offsets[1][j + 1].dx + sw, offsets[1][j + 1].dy);
-            var off3 = Offset(offsets[1][j + 1].dx - sw, offsets[1][j + 1].dy);
-            var off4 =
-            Offset(offsets[1][j + 1].dx - sw, offsets[1][j + 1].dy);
-            canvas.drawPoints(pointMode, [off1, off2], paint1);
-            canvas.drawPoints(pointMode, [off3, off4], paint1);
-          }
         }
+
+        /// Ajout double-barres
+        if ((rowsLabels[1][j].split("/").length > 1 &&
+                rowsLabels[1][j].split("/")[1] == "NAN") ||
+            (rowsLabels[1][j].split("/").length > 2 &&
+                rowsLabels[1][j].split("/")[2] == "NAN")) {
+          print("TOTO");
+          var off1 = Offset(offsets[1][j + 1].dx + sw, offsets[1][j + 1].dy);
+          var off2 = Offset(offsets[1][j + 1].dx + sw, offsets[1][j + 1].dy);
+          var off3 = Offset(offsets[1][j + 1].dx - sw, offsets[1][j + 1].dy);
+          var off4 = Offset(offsets[1][j + 1].dx - sw, offsets[1][j + 1].dy);
+          canvas.drawPoints(pointMode, [off1, off2], paint1);
+          canvas.drawPoints(pointMode, [off3, off4], paint1);
+        }
+      }
+    }
+
+    ///Ajout variations dernière ligne
+    var yHaut = (rowsLabels.length > 2) ? stepY * 2 + 10 : stepY + 10;
+    List<bool> drawArrow = [];
+    List<Offset> offArrow = [];
+    for (int i = 1; i < rowsLabels.last.length; i++) {
+      var tp = _textpainter(
+          cs, FontWeight.bold, fs, rowsLabels.last[i].split("/")[0]);
+      tp.layout();
+      double x1 = 0.0;
+      double y1 = 0.0;
+      double x2 = 0.0;
+      double y2 = 0.0;
+      if (rowsLabels.last[i].split("/").length < 4) {
+        x1 = (i == 1)
+            ? 5 + stepX * i + tp.width / 2
+            : (i == rowsLabels.last.length - 1)
+                ? stepX * i - tp.width + 5
+                : stepX * i - tp.width / 4;
+        y1 = (rowsLabels.last[i].contains("P0"))
+            ? size.height - tp.height - 5
+            : (rowsLabels.last[i].contains("P1"))
+                ? yHaut + stepY - tp.height
+                : yHaut - tp.height / 2 + 5;
+        tp.paint(canvas, Offset(x1, y1));
+        offArrow.add(Offset(x1 + tp.width / 2,
+            ((rowsLabels.last[i].contains("P0"))) ? y1 : y1 + tp.height));
+        drawArrow.add(true);
+      } else {
+        x1 = stepX * i - tp.width + 5;
+        y1 = (rowsLabels.last[i].split("/")[1].contains("P0"))
+            ? size.height - tp.height - 5
+            : (rowsLabels.last[i].split("/")[1].contains("P1"))
+                ? yHaut + stepY - tp.height
+                : yHaut - tp.height / 2 + 5;
+        tp.paint(canvas, Offset(x1, y1));
+        offArrow.add(Offset(
+            x1 + tp.width / 2,
+            ((rowsLabels.last[i].split("/")[1].contains("P0")))
+                ? y1
+                : y1 + tp.height));
+        drawArrow.add(false);
+        var tp2 = _textpainter(
+            cs, FontWeight.bold, fs, rowsLabels.last[i].split("/")[2]);
+        tp2.layout();
+        x2 = stepX * i + tp2.width / 2;
+        y2 = (rowsLabels.last[i].split("/")[3].contains("P0"))
+            ? size.height - tp.height - 5
+            : (rowsLabels.last[i].split("/")[3].contains("P1"))
+                ? yHaut + stepY - tp.height
+                : yHaut - tp.height / 2 + 5;
+        tp2.paint(canvas, Offset(x2, y2));
+        offArrow.add(Offset(
+            x2 + tp.width / 2,
+            ((rowsLabels.last[i].split("/")[3].contains("P0")))
+                ? y2
+                : y2 + tp.height));
+        drawArrow.add(true);
+      }
+    }
+    print(offArrow);
+    print(drawArrow);
+    List<List<Offset>> offArrow2 = [];
+    var yMiddle = yHaut + stepY;
+    for (int i = 0; i <= offArrow.length - 2; i++) {
+      if (drawArrow[i]) {
+        var deltaX1 = (drawArrow[i + 1]) ? 5 : 0;
+        var deltaX2 = (i >= 1 && drawArrow[i - 1]) ? 5 : 0;
+        var deltaY1 =
+            (offArrow[i + 1].dy == yMiddle && offArrow[i].dy < yMiddle)
+                ? tp.height
+                : 0;
+        var deltaY2 =
+            (offArrow[i].dy == yMiddle && offArrow[i + 1].dy < yMiddle)
+                ? tp.height
+                : 0;
+        canvas.drawPoints(
+            pointMode,
+            [
+              Offset(offArrow[i].dx + deltaX2, offArrow[i].dy - deltaY2),
+              Offset(offArrow[i + 1].dx - deltaX1, offArrow[i + 1].dy - deltaY1)
+            ],
+            paint1);
+        offArrow2.add([
+          Offset(offArrow[i].dx + deltaX2, offArrow[i].dy - deltaY2),
+          Offset(offArrow[i + 1].dx - deltaX1, offArrow[i + 1].dy - deltaY1)
+        ]);
+      }
+      print(offArrow2);
+      for (int k = 0; k <= offArrow2.length - 1; k++) {
+        var element = offArrow2[k];
+        double angle = pi / 8;
+        double l = 20;
+        double beta = atan((element.last.dy - element.first.dy) /
+            (element.last.dx - element.first.dx));
+        double alpha1 = beta - angle;
+        double alpha2 = pi / 2 - beta - angle;
+        double dx1 = -l*cos(alpha1);
+        double dx2 = -l*sin(alpha2);
+        double dy1 = (element.first.dy < element.last.dy) ? l*sin(alpha1) : l*sin(alpha1);
+        double dy2 = (element.first.dy < element.last.dy) ? l*cos(alpha2) : l*cos(alpha2);
+        canvas.drawPoints(pointMode, [element.last,Offset(element.last.dx+dx1,element.last.dy-dy1)], paint1);
+        canvas.drawPoints(pointMode, [element.last,Offset(element.last.dx+dx2,element.last.dy-dy2)], paint1);
+      }
     }
   }
 
@@ -2078,12 +2207,14 @@ class TableVariation extends StatelessWidget {
   ///
   /// Add /0 in String to display a O after sign and /NAN to display a double bar for derivative sign.
   ///
+  /// The values in variation can be display on 3 levels : add /P0 for down, /P1 for middle and /P2 for up.
+  ///
   /// ```dart
-  /// rowsLabels: rowsLabels: [
-  ///             ["x", "-∞", "-1", "0", "1", "+∞"],
-  ///             ["f'(x)", "-/0", "+/NAN", "+"],
-  ///             ["f(x)", "+∞/DES", "-1/INC", "+∞/NAN/-∞/INC","5/CONST","5"]
-  ///           ]
+  /// rowsLabels: [
+  ///                 ["x", "-∞", "-1", "1", "3", "+∞"],
+  ///                 ["f '(x)", "+/0", "-/NAN", "-/0","+"],
+  ///                 ["f(x)", "-∞/P0", "-5/P2", "-∞/P0/+∞/P2/NAN","3/P0","+∞/P2"]
+  ///               ]
   /// ```
   final List<List<String>> rowsLabels;
 
@@ -2132,13 +2263,14 @@ class TableVariation extends StatelessWidget {
   /// ```
   final Color? colorLine;
 
-  TableVariation({required this.size,
-    required this.rowsLabels,
-    this.fontSize,
-    this.colorFont,
-    this.colorSigns,
-    this.strokeWidth,
-    this.colorLine});
+  TableVariation(
+      {required this.size,
+      required this.rowsLabels,
+      this.fontSize,
+      this.colorFont,
+      this.colorSigns,
+      this.strokeWidth,
+      this.colorLine});
 
   @override
   Widget build(BuildContext context) {

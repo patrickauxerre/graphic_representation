@@ -1,3 +1,7 @@
+## [1.0.7] - 2021-05-22
+
+* Add class TableVariation.
+
 ## [1.0.6] - 2021-05-22
 
 * Add class TableSign.

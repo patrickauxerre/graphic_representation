@@ -177,6 +177,23 @@ TableSign(
         )
 ```
 
+### Class TableVariation
+Build a StatelessWidget : Container of defined size containing the variation table.   
+Display a variation table. 
+```dart
+TableVariation(
+              size: Size(MediaQuery.of(context).size.width,
+                  MediaQuery.of(context).size.height * 0.3),
+              rowsLabels: [
+                ["x", "-∞", "-1", "1", "3", "+∞"],
+                ["f '(x)", "+/0", "-/NAN", "-/0","+"],
+                ["f(x)", "-∞/P0", "-5/P2", "-∞/P0/+∞/P2/NAN","3/P0","+∞/P2"]
+              ],
+              fontSize: 18.0,
+              strokeWidth: 1.5,
+            )
+```
+
 ## Buy me a coffee
 <a href="https://www.buymeacoffee.com/patrickauxerre">
   <img width="217" height="50" src="https://github.com/catpat44/graphic_representation/blob/main/screenshots/buymecoffee.png?raw=true">
