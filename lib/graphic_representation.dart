@@ -1,11 +1,8 @@
 library graphic_representation;
 
-import 'dart:async';
 import 'dart:math';
-import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 num _sumPositiveElement(List<num>? l) {
   num s = 0;
@@ -62,22 +59,6 @@ TextPainter _textpainter(
       textDirection: TextDirection.ltr,
       textAlign: TextAlign.center);
   return tp;
-}
-
-AssetBundle getAssetBundle() {
-  if (rootBundle != null) {
-    return rootBundle;
-  } else {
-    return new NetworkAssetBundle(new Uri.directory(Uri.base.origin));
-  }
-}
-
-class ImageLoader {
-  static Future<ByteData> load(String url) async {
-    AssetBundle bundle = getAssetBundle();
-    var resource = bundle.load(url);
-    return resource;
-  }
 }
 
 /// Classe interne associée à la classe DiscreteGraphic
@@ -2173,12 +2154,28 @@ class _GraphCustomPainter6 extends CustomPainter {
             (element.last.dx - element.first.dx));
         double alpha1 = beta - angle;
         double alpha2 = pi / 2 - beta - angle;
-        double dx1 = -l*cos(alpha1);
-        double dx2 = -l*sin(alpha2);
-        double dy1 = (element.first.dy < element.last.dy) ? l*sin(alpha1) : l*sin(alpha1);
-        double dy2 = (element.first.dy < element.last.dy) ? l*cos(alpha2) : l*cos(alpha2);
-        canvas.drawPoints(pointMode, [element.last,Offset(element.last.dx+dx1,element.last.dy-dy1)], paint1);
-        canvas.drawPoints(pointMode, [element.last,Offset(element.last.dx+dx2,element.last.dy-dy2)], paint1);
+        double dx1 = -l * cos(alpha1);
+        double dx2 = -l * sin(alpha2);
+        double dy1 = (element.first.dy < element.last.dy)
+            ? l * sin(alpha1)
+            : l * sin(alpha1);
+        double dy2 = (element.first.dy < element.last.dy)
+            ? l * cos(alpha2)
+            : l * cos(alpha2);
+        canvas.drawPoints(
+            pointMode,
+            [
+              element.last,
+              Offset(element.last.dx + dx1, element.last.dy - dy1)
+            ],
+            paint1);
+        canvas.drawPoints(
+            pointMode,
+            [
+              element.last,
+              Offset(element.last.dx + dx2, element.last.dy - dy2)
+            ],
+            paint1);
       }
     }
   }
