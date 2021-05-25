@@ -4,7 +4,7 @@ Easy graphic representation
 This package will allow you to make graphic representations very quickly with [Flutter](https://flutter.dev)
 
 <p align="center">
-  <img src="https://github.com/catpat44/graphic_representation/raw/main/screenshots/demo.giff" width="300" height="650" />
+  <img src="https://github.com/catpat44/graphic_representation/blob/main/screenshots/demo.gif" width="300" height="650" />
 </p>
 
 ## Installation
