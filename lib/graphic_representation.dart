@@ -1539,26 +1539,28 @@ class TableValues extends StatelessWidget {
         textAlign: TextAlign.center,
       )),
     ));
-    if (f != null) {
-      for (int i = 0; i < numsX.length; i++) {
+    for (int i = 0; i < numsX.length; i++) {
+      if (f != null) {
         containers2.add(Container(
           color: (f!(numsX[i]).toString() == "NaN" ||
-              f!(numsX[i]).toString().contains("Infinity"))
+                  f!(numsX[i]).toString().contains("Infinity"))
               ? Colors.redAccent
               : Colors.white,
           height: size.height * 0.5,
           child: Center(
               child: Text(
-                (numsY != null && numsY!.length > i)
-                    ? numsY![i].toString()
-                    : (f != null &&
-                    f!(numsX[i]).toString() != "NaN" &&
-                    !f!(numsX[i]).toString().contains("Infinity"))
+            (numsY != null && numsY!.length > i)
+                ? numsY![i].toString()
+                : (f != null &&
+                        f!(numsX[i]).toString() != "NaN" &&
+                        !f!(numsX[i]).toString().contains("Infinity"))
                     ? double.parse(f!(numsX[i]).toString()).toStringAsFixed(2)
                     : "",
-                style: TextStyle(fontSize: fontSize),
-              )),
+            style: TextStyle(fontSize: fontSize),
+          )),
         ));
+      } else {
+        containers2.add(Container());
       }
     }
     TableRow tr2 = TableRow(

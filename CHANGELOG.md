@@ -1,4 +1,8 @@
-## [1.1.0] - 2021-05-25
+## [1.1.2] - 2021-06-02
+
+* bug correction : class TableValue.
+
+## [1.1.1] - 2021-06-02
 
 * bug correction : class TableValue.
 
