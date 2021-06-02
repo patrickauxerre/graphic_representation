@@ -73,7 +73,7 @@ packages:
       name: graphic_representation
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.6"
+    version: "1.1.0"
   matcher:
     dependency: transitive
     description:

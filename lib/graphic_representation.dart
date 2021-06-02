@@ -1539,25 +1539,27 @@ class TableValues extends StatelessWidget {
         textAlign: TextAlign.center,
       )),
     ));
-    for (int i = 0; i < numsX.length; i++) {
-      containers2.add(Container(
-        color: (f!(numsX[i]).toString() == "NaN" ||
-                f!(numsX[i]).toString().contains("Infinity"))
-            ? Colors.redAccent
-            : Colors.white,
-        height: size.height * 0.5,
-        child: Center(
-            child: Text(
-          (numsY != null && numsY!.length > i)
-              ? numsY![i].toString()
-              : (f != null &&
-                      f!(numsX[i]).toString() != "NaN" &&
-                      !f!(numsX[i]).toString().contains("Infinity"))
-                  ? double.parse(f!(numsX[i]).toString()).toStringAsFixed(2)
-                  : "",
-          style: TextStyle(fontSize: fontSize),
-        )),
-      ));
+    if (f != null) {
+      for (int i = 0; i < numsX.length; i++) {
+        containers2.add(Container(
+          color: (f!(numsX[i]).toString() == "NaN" ||
+              f!(numsX[i]).toString().contains("Infinity"))
+              ? Colors.redAccent
+              : Colors.white,
+          height: size.height * 0.5,
+          child: Center(
+              child: Text(
+                (numsY != null && numsY!.length > i)
+                    ? numsY![i].toString()
+                    : (f != null &&
+                    f!(numsX[i]).toString() != "NaN" &&
+                    !f!(numsX[i]).toString().contains("Infinity"))
+                    ? double.parse(f!(numsX[i]).toString()).toStringAsFixed(2)
+                    : "",
+                style: TextStyle(fontSize: fontSize),
+              )),
+        ));
+      }
     }
     TableRow tr2 = TableRow(
       children: containers2,

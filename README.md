@@ -12,7 +12,7 @@ In the dependencies: section of your `pubspec.yaml, add the following line:
 
 ```yaml
 dependencies:
-    graphic_representation: ^1.1.0
+    graphic_representation: ^1.1.1
 ```
 
 ## Usage
